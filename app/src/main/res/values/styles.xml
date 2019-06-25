@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="AppTheme.Base">
+
+        <!--&lt;!&ndash;顶部导航条中的Icon和二级字体的颜色&ndash;&gt;-->
+        <!--<item name="colorControlNormal">@color/white_alpha_240</item>-->
+        <!--<item name="colorControlActivated">@color/textPrimary</item>-->
+    </style>
+
+    <style name="AppTheme.TransStatusBar.Base" parent="AppTheme">
+        <!--去除顶部的状态栏-->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+
+    <style name="AppTheme.TransStatusBar" parent="AppTheme.TransStatusBar.Base"/>
+
+
+</resources>
