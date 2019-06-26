@@ -10,6 +10,8 @@ import android.util.Property;
 import android.view.View;
 
 import com.utsoft.jan.common.app.Activity;
+import com.utsoft.jan.factory.persistence.Account;
+import com.utsoft.jan.wtalker.activities.MainActivity;
 
 import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.compat.UiCompat;
@@ -53,10 +55,35 @@ public class LaunchActivity extends Activity {
         startAnim(0.8f,new Runnable(){
             @Override
             public void run() {
-
+                waitRecevierPushId();
             }
         });
 
+    }
+
+    private void waitRecevierPushId() {
+        if (Account.isLogin()){
+            skip();
+        }
+    }
+
+    private void skip() {
+        startAnim(1f, new Runnable() {
+            @Override
+            public void run() {
+                reallySkip();
+            }
+        });
+    }
+
+    private void reallySkip() {
+        if (Account.isLogin()) {
+            MainActivity.show(this);
+        }
+        else {
+
+        }
+        finish();
     }
 
     private void startAnim(float progress, final Runnable runnable) {

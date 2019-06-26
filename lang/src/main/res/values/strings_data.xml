@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_account_login_invalid_parameter">账户名和密码不能为空!</string>
+</resources>
