@@ -71,4 +71,7 @@ public class Network {
                 .build();
     }
     //返回 请求代理 remote
+    public static RemoteService remote(){
+        return getRetrofit().create(RemoteService.class);
+    }
 }

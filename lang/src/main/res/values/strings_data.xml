@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="data_account_login_invalid_parameter">账户名和密码不能为空!</string>
+
+    <string name="data_network_error">网络错误!</string>
 </resources>

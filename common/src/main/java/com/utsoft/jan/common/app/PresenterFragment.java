@@ -14,7 +14,7 @@ import com.utsoft.jan.factory.presenter.BaseContract;
 public abstract class PresenterFragment<Presenter extends BaseContract.Presenter> extends Fragment implements BaseContract.View<Presenter> {
 
     //拿到Presenter 引用
-    private Presenter mPresenter;
+    protected Presenter mPresenter;
     //初始化setpresetnter()
 
     @Override

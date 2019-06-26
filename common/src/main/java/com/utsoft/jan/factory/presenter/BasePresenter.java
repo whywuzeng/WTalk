@@ -13,10 +13,10 @@ public class BasePresenter<T extends BaseContract.View> implements BaseContract.
 
     //构造方法必须 传入view
     public BasePresenter(T mView){
-        setView();
+        setView(mView);
     }
 
-    protected void setView() {
+    protected void setView(T mView) {
         this.mView = mView;
         this.mView.setPresenter(this);
     }
