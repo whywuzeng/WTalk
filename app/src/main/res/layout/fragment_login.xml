@@ -173,7 +173,8 @@
             />
 
         <net.qiujuer.genius.ui.widget.Loading
-            android:layout_width="wrap_content"
+            android:id="@+id/loading"
+            android:layout_width="@dimen/len_36"
             android:layout_height="@dimen/len_36"
             android:layout_gravity="center"
             app:gAutoRun="false"

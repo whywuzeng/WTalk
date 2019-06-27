@@ -12,6 +12,7 @@ import com.utsoft.jan.factory.persenter.account.LoginPresenter;
 import com.utsoft.jan.wtalker.R;
 
 import net.qiujuer.genius.ui.widget.Button;
+import net.qiujuer.genius.ui.widget.Loading;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,6 +35,8 @@ public class LoginFragment extends PresenterFragment<LoginContract.LoginPresente
     TextView txtGoRegister;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.loading)
+    Loading loading;
 
     private AccountTrigger trigger;
 
@@ -55,19 +58,41 @@ public class LoginFragment extends PresenterFragment<LoginContract.LoginPresente
     }
 
     @Override
+    public void showLoading() {
+        super.showLoading();
+        editPhone.setEnabled(false);
+        editPassword.setEnabled(false);
+        btnSubmit.setEnabled(false);
+        loading.start();
+    }
+
+    @Override
+    public void showErrorMsg(int strId) {
+        super.showErrorMsg(strId);
+        editPhone.setEnabled(true);
+        editPassword.setEnabled(true);
+        btnSubmit.setEnabled(true);
+        loading.stop();
+    }
+
+    @Override
     public void loginSucess() {
         Application.showToast(R.string.data_login_success);
+        editPhone.setEnabled(true);
+        editPassword.setEnabled(true);
+        btnSubmit.setEnabled(true);
+        loading.stop();
     }
 
     @OnClick({R.id.txt_go_register, R.id.btn_submit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_go_register:
-                if (trigger!=null)
-                trigger.triggerView();
+                if (trigger != null)
+                    trigger.triggerView();
                 break;
             case R.id.btn_submit:
-                mPresenter.login(editPhone.getText().toString(),editPassword.getText().toString());
+                mPresenter.login(editPhone.getText().toString(), editPassword.getText().toString());
                 break;
         }
     }
