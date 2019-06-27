@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.utsoft.jan.common.app.Activity;
 import com.utsoft.jan.factory.persistence.Account;
+import com.utsoft.jan.wtalker.activities.AccountActivity;
 import com.utsoft.jan.wtalker.activities.MainActivity;
 
 import net.qiujuer.genius.res.Resource;
@@ -62,8 +63,8 @@ public class LaunchActivity extends Activity {
     }
 
     private void waitRecevierPushId() {
+        skip();
         if (Account.isLogin()){
-            skip();
         }
     }
 
@@ -81,7 +82,7 @@ public class LaunchActivity extends Activity {
             MainActivity.show(this);
         }
         else {
-
+            AccountActivity.show(this);
         }
         finish();
     }

@@ -8,43 +8,51 @@
     android:orientation="vertical"
     tools:background="@drawable/bg_src_tianjin"
     >
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="@dimen/len_80">
+        android:layout_height="@dimen/len_100"
+        >
+
         <TextView
-            android:text="@string/app_name"
-            android:textSize="@dimen/len_40"
-            android:textColor="@color/black_alpha_208"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/len_40"
+            android:textColor="@color/textLight"
+            android:text="@string/label_login_welcome"
+            />
 
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/len_8"
-        android:paddingBottom="@dimen/len_8"
         android:layout_marginStart="@dimen/len_16"
         android:layout_marginEnd="@dimen/len_16"
+        android:paddingTop="@dimen/len_8"
+        android:paddingBottom="@dimen/len_8"
+        android:orientation="vertical"
+        android:background="@drawable/bg_account_input"
         >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/textLight"
             >
+
             <ImageView
                 android:layout_width="@dimen/len_20"
                 android:layout_height="@dimen/len_20"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/len_8"
                 android:layout_marginRight="@dimen/len_8"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_phone"
                 android:tint="@color/colorAccent"
+                android:src="@drawable/ic_phone"
                 />
+
             <EditText
+                android:id="@+id/edit_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/len_4"
@@ -52,39 +60,43 @@
                 android:paddingTop="@dimen/len_8"
                 android:paddingBottom="@dimen/len_8"
                 android:background="@null"
-                android:hint="@string/label_phone"
                 android:inputType="phone"
-                android:textColor="@color/textPrimary"
-                android:textColorHint="@color/textSecond"
                 android:textSize="@dimen/font_14"
                 android:textCursorDrawable="@drawable/ic_cursor"
+                android:textColorHint="@color/textSecond"
+                android:textColor="@color/textPrimary"
+                android:hint="@string/label_phone"
                 />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black_alpha_32"
             android:layout_marginStart="@dimen/font_44"
+            android:layout_marginEnd="@dimen/len_8"
             android:layout_marginTop="@dimen/len_2"
             android:layout_marginBottom="@dimen/len_2"
-            android:layout_marginEnd="@dimen/len_8"
+            android:background="@color/black_alpha_32"
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/textLight"
             >
+
             <ImageView
                 android:layout_width="@dimen/len_20"
                 android:layout_height="@dimen/len_20"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/len_8"
                 android:layout_marginRight="@dimen/len_8"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_key"
                 android:tint="@color/colorAccent"
+                android:src="@drawable/ic_key"
                 />
+
             <EditText
+                android:id="@+id/edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/len_4"
@@ -92,12 +104,12 @@
                 android:paddingTop="@dimen/len_8"
                 android:paddingBottom="@dimen/len_8"
                 android:background="@null"
-                android:hint="@string/label_password"
-                android:inputType="phone"
-                android:textColor="@color/textPrimary"
-                android:textColorHint="@color/textSecond"
+                android:inputType="textPassword"
                 android:textSize="@dimen/font_14"
                 android:textCursorDrawable="@drawable/ic_cursor"
+                android:textColorHint="@color/textSecond"
+                android:textColor="@color/textPrimary"
+                android:hint="@string/label_password"
                 />
         </LinearLayout>
 
@@ -108,18 +120,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/len_16"
-        android:layout_marginTop="@dimen/len_16">
+        android:layout_marginTop="@dimen/len_16"
+        >
 
         <TextView
+            android:id="@+id/txt_go_register"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="没有账号?去注册"
-            android:textColor="@color/textPrimary"
+            android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="@dimen/len_16"
             android:gravity="center"
             android:textSize="@dimen/font_14"
             android:textStyle="bold"
+            android:textColor="@color/textLight"
+            android:text="没有账号?去注册"
             />
 
         <ImageView
@@ -127,8 +141,8 @@
             android:layout_height="@dimen/len_12"
             android:layout_gravity="end|center_vertical"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_right"
             android:tint="@color/black_alpha_112"
+            android:src="@drawable/ic_right"
             />
 
     </FrameLayout>
@@ -144,20 +158,22 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/len_28"
         >
+
         <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_submit"
             android:layout_width="@dimen/len_172"
             android:layout_height="@dimen/len_44"
             android:layout_gravity="center"
-            android:text="@string/label_login"
-            android:textColor="@color/black_alpha_208"
             android:background="@drawable/sel_btn_bg_black_alpha_44"
             app:gTouchColor="@color/colorAccentAlpha"
             app:gTouchCornerRadius="22dp"
             app:gTouchEffect="ripple"
+            android:textColor="@color/colorLight"
+            android:text="@string/label_login"
             />
 
         <net.qiujuer.genius.ui.widget.Loading
-            android:layout_width="@dimen/len_36"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/len_36"
             android:layout_gravity="center"
             app:gAutoRun="false"
