@@ -82,6 +82,7 @@ public class LoginFragment extends PresenterFragment<LoginContract.LoginPresente
         editPassword.setEnabled(true);
         btnSubmit.setEnabled(true);
         loading.stop();
+        //进入主界面
     }
 
     @OnClick({R.id.txt_go_register, R.id.btn_submit})

@@ -5,4 +5,9 @@
     <string name="label_login">登录</string>
     <string name="label_phone">电话</string>
     <string name="label_password">密码</string>
+    <string name="label_register">注册</string>
+    <string name="label_name">名字</string>
+
+    <string name="label_go_register">没有账号?去注册</string>
+    <string name="label_go_login">已有账号?去登陆</string>
 </resources>

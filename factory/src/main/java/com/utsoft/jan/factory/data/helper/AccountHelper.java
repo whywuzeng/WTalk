@@ -7,6 +7,7 @@ import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.model.RspModel;
 import com.utsoft.jan.factory.model.api.account.AccountRspModel;
 import com.utsoft.jan.factory.model.api.account.LoginModel;
+import com.utsoft.jan.factory.model.api.account.RegisterModel;
 import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.net.Network;
 import com.utsoft.jan.factory.net.RemoteService;
@@ -47,6 +48,17 @@ public class AccountHelper {
         }
         RemoteService remote = Network.remote();
         Call<RspModel<AccountRspModel>> call = remote.accountBind(pushId);
+        call.enqueue(new AccountRspCallback(callBack));
+    }
+
+    /**
+     * 注册接口
+     * @param registerModel model
+     * @param callBack 回调
+     */
+    public static void register(RegisterModel registerModel, DataSource.CallBack<User> callBack) {
+        RemoteService remote = Network.remote();
+        Call<RspModel<AccountRspModel>> call = remote.accountRegister(registerModel);
         call.enqueue(new AccountRspCallback(callBack));
     }
 

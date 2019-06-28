@@ -3,6 +3,7 @@ package com.utsoft.jan.factory.net;
 import com.utsoft.jan.factory.model.RspModel;
 import com.utsoft.jan.factory.model.api.account.AccountRspModel;
 import com.utsoft.jan.factory.model.api.account.LoginModel;
+import com.utsoft.jan.factory.model.api.account.RegisterModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,4 +23,7 @@ public interface RemoteService {
 
     @POST("account/bind/{pushId}")
     Call<RspModel<AccountRspModel>> accountBind(@Path(encoded = true,value = "pushId") String pushId);
+
+    @POST("account/register")
+    Call<RspModel<AccountRspModel>> accountRegister(@Body RegisterModel model);
 }
