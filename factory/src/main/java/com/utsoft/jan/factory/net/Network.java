@@ -3,6 +3,7 @@ package com.utsoft.jan.factory.net;
 import android.text.TextUtils;
 
 import com.utsoft.jan.common.Common;
+import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.persistence.Account;
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class Network {
 
        return instance.retrofit = builder.baseUrl(Common.Constance.base_Url)
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(Factory.getGson()))
                 .build();
     }
     //返回 请求代理 remote

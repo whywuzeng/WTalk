@@ -2,14 +2,54 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.utsoft.jan.wtalker">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- 读取存储权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- 写存储权限，OSS需要 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name="com.utsoft.jan.common.app.Application"
+        android:name="com.utsoft.jan.wtalker.App"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--个推的广播注册-->
+        <receiver android:name="com.utsoft.jan.wtalker.MessageReceiver"
+                  android:enabled="true"
+                  android:exported="true"
+                  android:permission="1000">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.utsoft.jan.wtalker.MessagePushService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            >
+        </service>
+
+        <!-- 配置SDK核心服务 -->
+        <!-- process必须指定为":pushservice"，切勿随意更改 -->
+        <service
+            android:name="com.utsoft.jan.wtalker.DemoPushService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":pushservice">
+        </service>
+
         <activity android:name=".activities.MainActivity">
         </activity>
         <activity
@@ -26,9 +66,12 @@
         <activity
             android:name=".activities.AccountActivity"
             android:label="@string/title_account_activity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             >
         </activity>
+        <activity android:name=".activities.UserActivity"/>
+
     </application>
 
 </manifest>

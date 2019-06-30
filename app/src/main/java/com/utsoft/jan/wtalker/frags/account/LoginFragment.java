@@ -10,9 +10,12 @@ import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.persenter.account.LoginContract;
 import com.utsoft.jan.factory.persenter.account.LoginPresenter;
 import com.utsoft.jan.wtalker.R;
+import com.utsoft.jan.wtalker.activities.MainActivity;
 
 import net.qiujuer.genius.ui.widget.Button;
 import net.qiujuer.genius.ui.widget.Loading;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -83,6 +86,8 @@ public class LoginFragment extends PresenterFragment<LoginContract.LoginPresente
         btnSubmit.setEnabled(true);
         loading.stop();
         //进入主界面
+        MainActivity.show(Objects.requireNonNull(getContext()));
+        getActivity().finish();
     }
 
     @OnClick({R.id.txt_go_register, R.id.btn_submit})

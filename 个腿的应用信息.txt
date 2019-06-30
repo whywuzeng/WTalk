@@ -1,0 +1,8 @@
+应用名称：	无聊
+appId：	VarpxkCtXs8RwP6GwN9WR6
+appSecret：	sKPNALgsZZ6WHydHdKQrA9
+appKey：	zO1t6yHakJ8VtsYssKqaiA
+应用包名：	com.utsoft.jan.wtalker
+应用签名：	D8:8A:EC:AC:0D:2B:C3:1A:84:E3:4B:83:D7:89:D3:6E:0F:53:15:CE:E9:75:70:F5:4C:08:69:81:2A:13:22:16
+masterSecret：	
+【个推】	XyQpn96GFm6s2MiO6vCTh7

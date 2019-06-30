@@ -1,5 +1,6 @@
 package com.utsoft.jan.wtalker;
 
+import com.igexin.sdk.PushManager;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.factory.Factory;
 
@@ -16,5 +17,8 @@ public class App extends Application {
         super.onCreate();
 
         Factory.setup();
+        // 推送进行初始化
+        PushManager.getInstance().initialize(this.getApplicationContext(), DemoPushService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), MessagePushService.class);
     }
 }

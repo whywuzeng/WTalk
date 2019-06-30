@@ -8,9 +8,12 @@ import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.persenter.account.RegisterContract;
 import com.utsoft.jan.factory.persenter.account.RegisterPresenter;
 import com.utsoft.jan.wtalker.R;
+import com.utsoft.jan.wtalker.activities.MainActivity;
 
 import net.qiujuer.genius.ui.widget.Button;
 import net.qiujuer.genius.ui.widget.Loading;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -97,6 +100,8 @@ public class RegisterFragment
         editPhone.setEnabled(true);
 
         loading.stop();
+        MainActivity.show(Objects.requireNonNull(getContext()));
+        getActivity().finish();
     }
 
 }

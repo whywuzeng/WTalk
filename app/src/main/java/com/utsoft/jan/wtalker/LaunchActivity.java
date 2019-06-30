@@ -6,6 +6,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.util.Property;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import com.utsoft.jan.common.app.Activity;
 import com.utsoft.jan.factory.persistence.Account;
 import com.utsoft.jan.wtalker.activities.AccountActivity;
 import com.utsoft.jan.wtalker.activities.MainActivity;
+import com.utsoft.jan.wtalker.frags.assist.PermissionsFragment;
 
 import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.compat.UiCompat;
@@ -63,9 +65,28 @@ public class LaunchActivity extends Activity {
     }
 
     private void waitRecevierPushId() {
-        skip();
         if (Account.isLogin()){
+            if (Account.isBind())
+            {
+                skip();
+                return;
+            }
+        }else if (!TextUtils.isEmpty(Account.getPushId())){
+            skip();
+            return;
         }
+//        else {
+//            skip();
+//            return;
+//        }
+
+        getWindow().getDecorView()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        waitRecevierPushId();
+                    }
+                },500);
     }
 
     private void skip() {
@@ -78,13 +99,15 @@ public class LaunchActivity extends Activity {
     }
 
     private void reallySkip() {
-        if (Account.isLogin()) {
-            MainActivity.show(this);
+        if (PermissionsFragment.haveAll(this,getSupportFragmentManager())) {
+            if (Account.isLogin()) {
+                MainActivity.show(this);
+            }
+            else {
+                AccountActivity.show(this);
+            }
+            finish();
         }
-        else {
-            AccountActivity.show(this);
-        }
-        finish();
     }
 
     private void startAnim(float progress, final Runnable runnable) {

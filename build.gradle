@@ -20,6 +20,14 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+        //个推私有Maven URL地址
+        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }
     }
 }
 
@@ -37,4 +45,7 @@ ext{
     butterknifeVersion = '8.5.1'
     retrofitVersion='2.1.0'
     glideVersion="3.7.0"
+    getuiVersion = '2.13.2.0'
+
+    easyPMVersion = "0.3.0"
 }

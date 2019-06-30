@@ -2,6 +2,7 @@ package com.utsoft.jan.factory.data.helper;
 
 import android.text.TextUtils;
 
+import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.R;
 import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.model.RspModel;
@@ -84,6 +85,7 @@ public class AccountHelper {
                     Account.login(result);
                     if (result.isBind()){
                         Account.setBind(true);
+                        if (mCallBack!=null)
                         mCallBack.onDataLoad(user);
                     }else {
                         //推送绑定服务
@@ -91,7 +93,7 @@ public class AccountHelper {
                     }
                 }else {
                     //错误解析  根据code 去解析
-
+                    Factory.decodeRspCode(body,mCallBack);
                 }
         }
 

@@ -49,7 +49,8 @@ public class Account {
     }
 
     public static boolean isLogin(){
-        return !TextUtils.isEmpty(sUserId);
+        return !TextUtils.isEmpty(sUserId)
+                &&!TextUtils.isEmpty(sToken);
     }
 
     /**
@@ -82,5 +83,12 @@ public class Account {
 
     public static String getPushId(){
         return sPushId;
+    }
+
+    public static boolean isComplete() {
+        if (isLogin()){
+            return true;
+        }
+        return false;
     }
 }
