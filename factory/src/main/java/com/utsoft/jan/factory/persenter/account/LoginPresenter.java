@@ -7,6 +7,7 @@ import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.data.helper.AccountHelper;
 import com.utsoft.jan.factory.model.api.account.LoginModel;
 import com.utsoft.jan.factory.model.db.User;
+import com.utsoft.jan.factory.persistence.Account;
 import com.utsoft.jan.factory.presenter.BasePresenter;
 
 import net.qiujuer.genius.kit.handler.Run;
@@ -41,7 +42,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.LoginView> imple
                     //todo 做一个lang的module为存放地方
                     view.showErrorMsg(R.string.data_account_login_invalid_parameter);
                 }else {
-                    LoginModel loginModel = new LoginModel(phone, password);
+                    LoginModel loginModel = new LoginModel(phone, password,Account.getPushId());
                     AccountHelper.login(loginModel,LoginPresenter.this);
                 }
             }

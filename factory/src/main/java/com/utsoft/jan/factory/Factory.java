@@ -7,8 +7,6 @@ import com.google.gson.GsonBuilder;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.model.RspModel;
-import com.utsoft.jan.factory.model.api.account.AccountRspModel;
-import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.persistence.Account;
 
 /**
@@ -49,7 +47,7 @@ public class Factory {
         return instance.gson;
     }
 
-    public static void decodeRspCode(RspModel<AccountRspModel> body, DataSource.CallBack<User> mCallBack) {
+    public static void decodeRspCode(RspModel body, DataSource.FailedCallback mCallBack) {
         if (body == null)
             return;
         switch (body.getCode()){
@@ -110,7 +108,7 @@ public class Factory {
 
     }
 
-    public static void decodeRspCode(@StringRes int idRes, DataSource.CallBack<User> mCallBack) {
+    public static void decodeRspCode(@StringRes int idRes, DataSource.FailedCallback mCallBack) {
         if (mCallBack!=null){
             mCallBack.onDataNotAvailable(idRes);
         }

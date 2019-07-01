@@ -9,6 +9,7 @@ import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.data.helper.AccountHelper;
 import com.utsoft.jan.factory.model.api.account.RegisterModel;
 import com.utsoft.jan.factory.model.db.User;
+import com.utsoft.jan.factory.persistence.Account;
 import com.utsoft.jan.factory.presenter.BasePresenter;
 
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
           }else if (name.length()<2){
               Application.showToast(R.string.data_account_register_name_lenght);
           }else {
-              RegisterModel registerModel = new RegisterModel(phone, password, name);
+              RegisterModel registerModel = new RegisterModel(phone, password, name,Account.getPushId());
               AccountHelper.register(registerModel,this);
           }
     }

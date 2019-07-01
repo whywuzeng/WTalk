@@ -75,4 +75,9 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     protected void initArgs() {
 
     }
+
+    public boolean onBackPressed() {
+
+        return false;
+    }
 }

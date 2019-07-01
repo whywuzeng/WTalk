@@ -2,7 +2,10 @@ package com.utsoft.jan.common.app;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -62,7 +65,18 @@ public abstract class Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null && fragments.size() > 0) {
+            for (Fragment fragment : fragments){
+                if (fragment instanceof com.utsoft.jan.common.app.Fragment){
+                    if (((com.utsoft.jan.common.app.Fragment) fragment).onBackPressed()){
+                        return;
+                    }
+                }
+            }
+        }
 
+        super.onBackPressed();
+        finish();
     }
 }
