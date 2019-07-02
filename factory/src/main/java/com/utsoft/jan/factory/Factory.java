@@ -4,6 +4,8 @@ import android.support.annotation.StringRes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.model.RspModel;
@@ -19,6 +21,10 @@ import com.utsoft.jan.factory.persistence.Account;
 public class Factory {
 
     public static void setup(){
+        //所有数据的初始化 都在这里开始
+        FlowManager.init(new FlowConfig.Builder(app())
+                .openDatabasesOnInit(true)
+                .build());
 
         //加载数据
         Account.load(app());

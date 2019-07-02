@@ -20,6 +20,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://www.jitpack.io" }
         maven {
             url 'http://maven.aliyun.com/nexus/content/groups/public/'
         }
@@ -46,6 +47,10 @@ ext{
     retrofitVersion='2.1.0'
     glideVersion="3.7.0"
     getuiVersion = '2.13.2.0'
+
+    circleimageviewVersion = '2.1.0'
+
+    dbflowVersion = "4.0.0-beta7"
 
     easyPMVersion = "0.3.0"
 }

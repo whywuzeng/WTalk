@@ -19,10 +19,13 @@ public class NavHelper<T> {
     private FragmentManager manager;
     private int layContainer;
     private Context context;
-    private  TabChangeListener listener;
+    private  TabChangeListener<T> listener;
 
-    public NavHelper() {
-
+    public NavHelper(FragmentManager manager,int layContainer,Context context,TabChangeListener<T> listener) {
+        this.manager = manager;
+        this.layContainer = layContainer;
+        this.context = context;
+        this.listener = listener;
     }
 
     private Tab<T> CurTab;

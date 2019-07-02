@@ -75,31 +75,34 @@ public class AccountHelper {
         public void onResponse(Call<RspModel<AccountRspModel>> call,
                                Response<RspModel<AccountRspModel>> response) {
             RspModel<AccountRspModel> body = response.body();
-                if (body.success()){
-                    AccountRspModel result = body.getResult();
-                    User user = result.getUser();
+            if (body!=null&&body.success()) {
+                AccountRspModel result = body.getResult();
+                User user = result.getUser();
 
-                    //保持数据库
+                //保持数据库
+                DbHelper.save(User.class, user);
 
-                    //持久化xml
-                    Account.login(result);
-                    if (result.isBind()){
-                        Account.setBind(true);
-                        if (mCallBack!=null)
+                //持久化xml
+                Account.login(result);
+                if (result.isBind()) {
+                    Account.setBind(true);
+                    if (mCallBack != null)
                         mCallBack.onDataLoad(user);
-                    }else {
-                        //推送绑定服务
-                        bindPush(mCallBack);
-                    }
-                }else {
-                    //错误解析  根据code 去解析
-                    Factory.decodeRspCode(body,mCallBack);
                 }
+                else {
+                    //推送绑定服务
+                    bindPush(mCallBack);
+                }
+            }
+            else {
+                //错误解析  根据code 去解析
+                Factory.decodeRspCode(body, mCallBack);
+            }
         }
 
         @Override
         public void onFailure(Call<RspModel<AccountRspModel>> call, Throwable t) {
-            if (mCallBack!=null){
+            if (mCallBack != null) {
                 mCallBack.onDataNotAvailable(R.string.data_network_error);
             }
         }

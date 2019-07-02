@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.model.api.account.AccountRspModel;
+import com.utsoft.jan.factory.model.db.User;
+import com.utsoft.jan.factory.model.db.User_Table;
 
 /**
  * Created by Administrator on 2019/6/26.
@@ -90,5 +93,12 @@ public class Account {
             return true;
         }
         return false;
+    }
+
+    public static User getUser() {
+        return TextUtils.isEmpty(sUserId) ? new User() : SQLite.select()
+                .from(User.class)
+                .where(User_Table.id.eq(sUserId))
+                .querySingle();
     }
 }

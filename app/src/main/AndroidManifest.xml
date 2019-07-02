@@ -50,8 +50,11 @@
             android:process=":pushservice">
         </service>
 
-        <activity android:name=".activities.MainActivity">
-        </activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.TransStatusBar"
+            />
+
         <activity
             android:name=".LaunchActivity"
             android:label="@string/title_activity_title"
@@ -63,13 +66,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.AccountActivity"
             android:label="@string/title_account_activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            >
-        </activity>
+            />
+
         <activity android:name=".activities.UserActivity"/>
 
     </application>

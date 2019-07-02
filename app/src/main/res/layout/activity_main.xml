@@ -19,14 +19,17 @@
             android:paddingLeft="@dimen/len_4"
             android:paddingRight="@dimen/len_4"
             >
-            <ImageView
+            <com.utsoft.jan.widget.PortraitView
                 android:id="@+id/im_portrait"
                 android:layout_width="@dimen/portraitSize"
                 android:layout_height="@dimen/portraitSize"
+                android:padding="@dimen/len_4"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_account"
                 android:layout_gravity="start|center_vertical"
                 />
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/len_24"
@@ -66,6 +69,7 @@
         />
 
     <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/len_52"
         android:layout_gravity="bottom"
