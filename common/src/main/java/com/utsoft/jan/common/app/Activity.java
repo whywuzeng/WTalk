@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.utsoft.jan.widget.convention.PlaceHolderView;
+
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -17,6 +19,17 @@ import butterknife.ButterKnife;
  * com.utsoft.jan.common.app
  */
 public abstract class Activity extends AppCompatActivity {
+
+    public PlaceHolderView getHolderView() {
+        return holderView;
+    }
+
+    public void setHolderView(PlaceHolderView holderView) {
+        this.holderView = holderView;
+    }
+
+    private PlaceHolderView holderView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

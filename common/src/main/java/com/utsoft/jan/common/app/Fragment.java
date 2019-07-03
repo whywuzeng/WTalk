@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.utsoft.jan.widget.convention.PlaceHolderView;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -22,6 +24,16 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     protected View mRoot;
     private Unbinder unbinder;
     private boolean mIsFirstInitData = true;
+
+    public PlaceHolderView getHolderView() {
+        return holderView;
+    }
+
+    public void setHolderView(PlaceHolderView holderView) {
+        this.holderView = holderView;
+    }
+
+    protected PlaceHolderView holderView;
 
     @Override
     public void onAttach(Context context) {

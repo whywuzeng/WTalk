@@ -29,12 +29,16 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
 
     @Override
     public void showLoading() {
-
+        holderView.triggerLoading();
     }
 
     @Override
     public void showErrorMsg(int strId) {
-        Application.showToast(strId);
+        if (holderView!=null){
+            holderView.triggerError(strId);
+        }else {
+            Application.showToast(strId);
+        }
     }
 
     @Override
