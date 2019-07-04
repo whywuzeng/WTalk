@@ -2,6 +2,8 @@ package com.utsoft.jan.factory.presenter;
 
 import android.support.annotation.StringRes;
 
+import com.utsoft.jan.widget.recycler.RecyclerAdapter;
+
 /**
  * Created by Administrator on 2019/6/26.
  * <p>
@@ -23,5 +25,12 @@ public interface BaseContract {
         void start();
 
         void destory();
+    }
+
+    interface RecyclerView<T extends Presenter,ViewMode> extends View<T>{
+
+        RecyclerAdapter<ViewMode> getRecyclerAdapter();
+
+        void onAdapterDataChange();
     }
 }
