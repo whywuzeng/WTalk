@@ -4,7 +4,7 @@ package com.utsoft.jan.factory.model.db;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.utsoft.jan.factory.model.Author;
 
 import java.util.Date;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * @version 1.0.0
  */
 @Table(database = AppDataBase.class)
-public class User extends BaseModel {
+public class User extends BaseDbModel<User> implements Author {
     public static final int SEX_MAN = 1;
     public static final int SEX_WOMAN = 2;
 
@@ -168,7 +168,7 @@ public class User extends BaseModel {
         return this == old || Objects.equals(id, old.id);
     }
 
-    public boolean isUiContentSame(User old) {
+    public boolean isUIContentSame(User old) {
         // 显示的内容是否一样，主要判断 名字，头像，性别，是否已经关注
         return this == old || (
                 Objects.equals(name, old.name)

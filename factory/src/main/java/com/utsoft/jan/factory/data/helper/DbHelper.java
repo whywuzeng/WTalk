@@ -82,18 +82,18 @@ public class DbHelper {
      * @param listener
      * @param <Model>
      */
-    private <Model extends BaseModel> void addChangeListener(final Class<Model> tClass,
+    public static <Model extends BaseModel> void addChangeListener(final Class<Model> tClass,
                                                              ChangedListener<Model> listener) {
-        Set<ChangedListener> changedListeners = this.changedListebers.get(tClass);
+        Set<ChangedListener> changedListeners = instance.changedListebers.get(tClass);
         if (changedListeners == null) {
             changedListeners = new HashSet<>();
-            this.changedListebers.put(tClass, changedListeners);
+            instance.changedListebers.put(tClass, changedListeners);
         }
         changedListeners.add(listener);
     }
 
-    private <Model extends BaseModel> void removeChangeListener(final Class<Model> tClass, ChangedListener<Model> listener) {
-        Set<ChangedListener> mListeners = getListener(tClass);
+    public static  <Model extends BaseModel> void removeChangeListener(final Class<Model> tClass, ChangedListener<Model> listener) {
+        Set<ChangedListener> mListeners = instance.getListener(tClass);
         if (mListeners == null) {
             return;
         }

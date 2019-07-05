@@ -1,5 +1,6 @@
 package com.utsoft.jan.factory.persenter.contact;
 
+import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.presenter.BaseContract;
 
 /**
@@ -11,7 +12,7 @@ import com.utsoft.jan.factory.presenter.BaseContract;
  */
 public interface ContactContract {
 
-    interface View extends BaseContract.View<Presenter> {
+    interface View extends BaseContract.RecyclerView<Presenter,User> {
 
     }
 

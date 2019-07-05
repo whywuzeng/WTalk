@@ -16,14 +16,14 @@ import java.util.List;
  * <p>
  * com.utsoft.jan.factory.presenter
  */
-public abstract class BaseRecyclerPresenter<ViewMode,View extends BaseContract.RecyclerView> extends BasePresenter<View>{
+public abstract class BaseRecyclerPresenter<ViewModel,View extends BaseContract.RecyclerView> extends BasePresenter<View>{
 
     public BaseRecyclerPresenter(View mView) {
         super(mView);
     }
 
     //replace 更新一堆数据
-    public void refreshData(final List<ViewMode> datas) {
+    public void refreshData(final List<ViewModel> datas) {
 
         Run.onUiAsync(new Action() {
             @Override
@@ -34,7 +34,7 @@ public abstract class BaseRecyclerPresenter<ViewMode,View extends BaseContract.R
                 if (view == null)
                     return;
 
-                RecyclerAdapter<ViewMode> adapter = view.getRecyclerAdapter();
+                RecyclerAdapter<ViewModel> adapter = view.getRecyclerAdapter();
                 adapter.replace(datas);
                 view.onAdapterDataChange();
             }
@@ -43,7 +43,7 @@ public abstract class BaseRecyclerPresenter<ViewMode,View extends BaseContract.R
 
 
     //差异更新数据
-    public void refreshData(final DiffUtil.DiffResult result, final List<ViewMode> datas){
+    public void refreshData(final DiffUtil.DiffResult result, final List<ViewModel> datas){
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
@@ -52,11 +52,11 @@ public abstract class BaseRecyclerPresenter<ViewMode,View extends BaseContract.R
         });
     }
 
-    private void refreshDataOnUIThread(DiffUtil.DiffResult result, List<ViewMode> datas) {
+    private void refreshDataOnUIThread(DiffUtil.DiffResult result, List<ViewModel> datas) {
         View view = getView();
         if (view!=null)
             return;
-        RecyclerAdapter<ViewMode> adapter = view.getRecyclerAdapter();
+        RecyclerAdapter<ViewModel> adapter = view.getRecyclerAdapter();
 
         adapter.getListData().clear();
         adapter.getListData().addAll(datas);
