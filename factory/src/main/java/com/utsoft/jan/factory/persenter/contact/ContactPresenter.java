@@ -3,6 +3,7 @@ package com.utsoft.jan.factory.persenter.contact;
 import android.support.v7.util.DiffUtil;
 
 import com.utsoft.jan.factory.data.DataSource;
+import com.utsoft.jan.factory.data.helper.UserHelper;
 import com.utsoft.jan.factory.data.user.ContactDataSource;
 import com.utsoft.jan.factory.data.user.ContactRepository;
 import com.utsoft.jan.factory.model.db.User;
@@ -22,14 +23,14 @@ import java.util.List;
 public class ContactPresenter extends BaseSourcePersenter<User,User,ContactContract.View,ContactDataSource>
         implements ContactContract.Presenter,DataSource.SucceedCallback<List<User>> {
 
-    public ContactPresenter(ContactDataSource source, ContactContract.View mView) {
+    public ContactPresenter( ContactContract.View mView) {
         super(new ContactRepository(), mView);
     }
 
     @Override
     public void start() {
         super.start();
-//        UserHelper.update();
+        UserHelper.refreshContacts();
     }
 
     @Override

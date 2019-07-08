@@ -54,7 +54,7 @@ public abstract class BaseRecyclerPresenter<ViewModel,View extends BaseContract.
 
     private void refreshDataOnUIThread(DiffUtil.DiffResult result, List<ViewModel> datas) {
         View view = getView();
-        if (view!=null)
+        if (view==null)
             return;
         RecyclerAdapter<ViewModel> adapter = view.getRecyclerAdapter();
 

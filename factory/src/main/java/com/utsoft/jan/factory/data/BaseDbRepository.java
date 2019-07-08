@@ -105,10 +105,11 @@ public abstract class BaseDbRepository<Data extends BaseModel>
         {
             mDataList.clear();
             notifyDataChange();
+            return;
         }
 
         Data[] data = CollectionUtil.toArray(tResult, aClass);
-//        回调数据集更新
+//      回调数据集更新
         onDataSave(data);
     }
 }

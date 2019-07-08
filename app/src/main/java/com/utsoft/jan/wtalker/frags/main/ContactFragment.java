@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.model.db.User;
+import com.utsoft.jan.factory.persenter.contact.ContactContract;
+import com.utsoft.jan.factory.persenter.contact.ContactPresenter;
 import com.utsoft.jan.widget.EmptyView;
 import com.utsoft.jan.widget.PortraitView;
 import com.utsoft.jan.widget.recycler.RecyclerAdapter;
@@ -24,7 +26,7 @@ import butterknife.OnClick;
  * <p>
  * com.utsoft.jan.wtalker.frags.main
  */
-public class ContactFragment extends PresenterFragment {
+public class ContactFragment extends PresenterFragment<ContactContract.Presenter> implements ContactContract.View {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -62,10 +64,24 @@ public class ContactFragment extends PresenterFragment {
     protected void initFirit() {
         super.initFirit();
         //开始加载
-
+        mPresenter.start();
     }
 
+    @Override
+    public RecyclerAdapter<User> getRecyclerAdapter() {
+        return mAdapter;
+    }
 
+    @Override
+    public void onAdapterDataChange() {
+        holderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
+    }
+
+    @Override
+    protected void initPresenter() {
+        super.initPresenter();
+        mPresenter = new ContactPresenter(this);
+    }
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<User> {
         @BindView(R.id.im_portrait)
@@ -87,7 +103,7 @@ public class ContactFragment extends PresenterFragment {
         }
 
         @OnClick(R.id.im_portrait)
-        void onPortraitClick(){
+        void onPortraitClick() {
             //显示信息
         }
     }

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,10 +18,12 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.utsoft.jan.common.app.Activity;
+import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.factory.persistence.Account;
 import com.utsoft.jan.widget.PortraitView;
 import com.utsoft.jan.wtalker.R;
 import com.utsoft.jan.wtalker.frags.main.ActiveFragment;
+import com.utsoft.jan.wtalker.frags.main.ContactFragment;
 import com.utsoft.jan.wtalker.helper.NavHelper;
 
 import net.qiujuer.genius.ui.Ui;
@@ -29,6 +32,7 @@ import net.qiujuer.genius.ui.widget.FloatActionButton;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends Activity implements NavHelper.TabChangeListener<Integer>, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +47,8 @@ public class MainActivity extends Activity implements NavHelper.TabChangeListene
     TextView tvTitle;
     @BindView(R.id.btn_action)
     FloatActionButton btnAction;
+    @BindView(R.id.im_search)
+    ImageView imSearch;
 
     private NavHelper<Integer> mHelper;
 
@@ -52,7 +58,7 @@ public class MainActivity extends Activity implements NavHelper.TabChangeListene
         mHelper = new NavHelper<>(getSupportFragmentManager(), R.id.lay_container, this, this);
         mHelper.add(R.id.action_home, new NavHelper.Tab<Integer>(R.string.action_home, ActiveFragment.class));
         mHelper.add(R.id.action_group, new NavHelper.Tab<Integer>(R.string.action_group, ActiveFragment.class));
-        mHelper.add(R.id.action_contact, new NavHelper.Tab<Integer>(R.string.action_contact, ActiveFragment.class));
+        mHelper.add(R.id.action_contact, new NavHelper.Tab<Integer>(R.string.action_contact, ContactFragment.class));
 
         navigation.setOnNavigationItemSelectedListener(this);
 
@@ -112,10 +118,10 @@ public class MainActivity extends Activity implements NavHelper.TabChangeListene
         if (newtab.extra == R.string.action_home) {
             transY = Ui.dipToPx(getResources(), 76);
         }
-        else if (Objects.equals(newtab.extra , R.string.action_group)) {
+        else if (Objects.equals(newtab.extra, R.string.action_group)) {
             rotation = -360;
         }
-        else if (Objects.equals(newtab.extra , R.string.action_contact)) {
+        else if (Objects.equals(newtab.extra, R.string.action_contact)) {
             rotation = 360;
         }
         btnAction.setImageResource(R.drawable.ic_group);
@@ -134,4 +140,22 @@ public class MainActivity extends Activity implements NavHelper.TabChangeListene
         return mHelper.menuClick(menuItem.getItemId());
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.im_search)
+    public void onViewClicked() {
+        //跳转到搜索界面
+        if (Objects.equals(mHelper.getCurTab().extra, "Group")) {
+            //打开群界面
+            Application.showToast("打开群界面");
+        }
+        else {
+            SearchActivity.show(this,SearchActivity.TYPE_USER);
+        }
+    }
 }

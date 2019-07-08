@@ -3,11 +3,14 @@ package com.utsoft.jan.factory.data.helper;
 import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.R;
 import com.utsoft.jan.factory.data.DataSource;
+import com.utsoft.jan.factory.data.user.UserDispatcher;
 import com.utsoft.jan.factory.model.RspModel;
 import com.utsoft.jan.factory.model.api.user.UserUpdateModel;
 import com.utsoft.jan.factory.model.card.UserCard;
 import com.utsoft.jan.factory.net.Network;
 import com.utsoft.jan.factory.net.RemoteService;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,5 +52,35 @@ public class UserHelper {
                 callback.onDataNotAvailable(R.string.data_network_error);
             }
         });
+    }
+
+    /**
+     *刷新联系人，从网络请求。
+     * 存储到数据库，然后监听数据库的改变
+     */
+    public static void refreshContacts() {
+        RemoteService service = Network.remote();
+        service.userContacts()
+                .enqueue(new Callback<RspModel<List<UserCard>>>() {
+                    @Override
+                    public void onResponse(Call<RspModel<List<UserCard>>> call, Response<RspModel<List<UserCard>>> response) {
+                        RspModel<List<UserCard>> rspModel = response.body();
+                        if (rspModel.success()) {
+                            List<UserCard> cards = rspModel.getResult();
+                            if (cards == null && cards.size() == 0)
+                                return;
+                            UserCard[] cards1 = cards.toArray(new UserCard[0]);
+                            UserDispatcher.getInstance().dispatch(cards1);
+                        }
+                        else {
+                            Factory.decodeRspCode(rspModel, null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RspModel<List<UserCard>>> call, Throwable t) {
+
+                    }
+                });
     }
 }

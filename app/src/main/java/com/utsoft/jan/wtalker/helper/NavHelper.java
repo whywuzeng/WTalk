@@ -28,6 +28,10 @@ public class NavHelper<T> {
         this.listener = listener;
     }
 
+    public Tab<T> getCurTab() {
+        return CurTab;
+    }
+
     private Tab<T> CurTab;
     //add 方法
     public void add(int menuId,Tab<T> tab){

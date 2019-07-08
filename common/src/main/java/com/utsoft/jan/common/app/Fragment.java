@@ -22,7 +22,7 @@ import butterknife.Unbinder;
  */
 public abstract class Fragment extends android.support.v4.app.Fragment {
     protected View mRoot;
-    private Unbinder unbinder;
+    protected Unbinder unbinder;
     private boolean mIsFirstInitData = true;
 
     public PlaceHolderView getHolderView() {
