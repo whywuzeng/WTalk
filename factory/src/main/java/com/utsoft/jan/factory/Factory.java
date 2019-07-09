@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.factory.data.DataSource;
+import com.utsoft.jan.factory.data.user.UserDispatcher;
 import com.utsoft.jan.factory.model.RspModel;
 import com.utsoft.jan.factory.persistence.Account;
 
@@ -118,5 +119,9 @@ public class Factory {
         if (mCallBack!=null){
             mCallBack.onDataNotAvailable(idRes);
         }
+    }
+
+    public static UserDispatcher getUserCenter(){
+        return UserDispatcher.getInstance();
     }
 }

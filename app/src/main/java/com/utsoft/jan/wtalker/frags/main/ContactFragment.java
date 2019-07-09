@@ -105,6 +105,7 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
         @OnClick(R.id.im_portrait)
         void onPortraitClick() {
             //显示信息
+
         }
     }
 }

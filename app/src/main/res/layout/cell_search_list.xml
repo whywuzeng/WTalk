@@ -57,7 +57,7 @@
         app:layout_constraintHorizontal_bias="0.963"
         app:layout_constraintStart_toEndOf="@+id/txt_name"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorAccent"
+        android:background="@drawable/sel_btn_bg_accent_4"
         android:tint="@color/white"
         app:srcCompat="@drawable/ic_add"
         tools:layout_editor_absoluteY="5dp"/>

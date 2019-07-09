@@ -53,6 +53,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.TransStatusBar"
+            android:screenOrientation="portrait"
             />
 
         <activity
@@ -75,7 +76,13 @@
             />
 
         <activity android:name=".activities.UserActivity"/>
-        <activity android:name=".activities.SearchActivity"/>
+
+        <activity android:name=".activities.SearchActivity"
+                  android:label="@string/label_search"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.TransStatusBar"
+            />
+        <activity android:name=".activities.PersonalToolbarActivity"/>
 
     </application>
 

@@ -51,7 +51,11 @@ public class NavHelper<T> {
     private void doSelect(Tab<T> tTab) {
         Tab<T> old = null;
         if (CurTab!=null){
-
+            old =CurTab;
+            if (old==tTab)
+            {
+                return;
+            }
         }
 
         CurTab = tTab;

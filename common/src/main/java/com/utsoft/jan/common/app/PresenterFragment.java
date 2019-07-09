@@ -29,7 +29,10 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
 
     @Override
     public void showLoading() {
-        holderView.triggerLoading();
+        if (holderView!=null)
+        {
+            holderView.triggerLoading();
+        }
     }
 
     @Override

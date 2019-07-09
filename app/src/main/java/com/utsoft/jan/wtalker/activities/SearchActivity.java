@@ -67,7 +67,7 @@ public class SearchActivity extends ToolbarActivity {
         menuInflater.inflate(R.menu.search,menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         if (searchView!=null)
         {
             //拿到搜素service
@@ -75,11 +75,17 @@ public class SearchActivity extends ToolbarActivity {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 //            searchView.setSearchableInfo
 
+            //设置是否显示搜索框展开时的提交按钮
+            searchView.setSubmitButtonEnabled(true);
+            //设置输入框提示语
+            searchView.setQueryHint("hint");
+
             //添加搜素监听
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String s) {
                     search(s);
+                    searchView.clearFocus();
                     return true;
                 }
 
