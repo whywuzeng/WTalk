@@ -1,5 +1,6 @@
 package com.utsoft.jan.factory.persenter.contact;
 
+import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.data.helper.UserHelper;
 import com.utsoft.jan.factory.model.db.User;
@@ -29,25 +30,29 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
     @Override
     public void start() {
         super.start();
-
-        final PersonalContract.View view = getView();
-        if (view!=null){
-            String userID = view.getUserID();
-            //访问数据库
-            final User user = UserHelper.searchFirstNet(userID);
-            mData = user;
-            if (user.getId()!=Account.getUser().getId() && user.isFollow()){
-                Run.onUiAsync(new Action() {
-                    @Override
-                    public void call() {
-                        //可以聊天
-                        view.allowSayHello(true);
-                        view.onLoadDone(user);
-                        view.setFollowStatus(true);
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+                final PersonalContract.View view = getView();
+                if (view!=null){
+                    String userID = view.getUserID();
+                    //访问数据库
+                    final User user = UserHelper.searchFirstNet(userID);
+                    mData = user;
+                    if (user.getId()!=Account.getUser().getId() && user.isFollow()){
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                //可以聊天
+                                view.allowSayHello(true);
+                                view.onLoadDone(user);
+                                view.setFollowStatus(true);
+                            }
+                        });
                     }
-                });
+                }
             }
-        }
+        });
     }
 
     @Override

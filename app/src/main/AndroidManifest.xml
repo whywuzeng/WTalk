@@ -83,6 +83,7 @@
                   android:theme="@style/AppTheme.TransStatusBar"
             />
         <activity android:name=".activities.PersonalToolbarActivity"/>
+        <activity android:name=".activities.MessageActivity"/>
 
     </application>
 

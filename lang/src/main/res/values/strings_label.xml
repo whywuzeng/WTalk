@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="label_app_name">吴聊</string>
+
     <string name="label_login_welcome">登录</string>
     <string name="label_submit">提交</string>
     <string name="label_login">登录</string>
@@ -22,4 +24,9 @@
 
     <string name="label_go_register">没有账号?去注册</string>
     <string name="label_go_login">已有账号?去登陆</string>
+
+    <string name="label_follows">Follows\n%s</string>
+    <string name="label_following">Following\n%s</string>
+    <string name="label_gallery_select_max_size">至多选择%s张</string>
+    <string name="label_gallery_selected_size">已选%s张</string>
 </resources>

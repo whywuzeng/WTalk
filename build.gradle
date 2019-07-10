@@ -53,4 +53,6 @@ ext{
     dbflowVersion = "4.0.0-beta7"
 
     easyPMVersion = "0.3.0"
+
+    airpanelVersion = "1.1.0"
 }

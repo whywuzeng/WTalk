@@ -15,6 +15,7 @@ import com.utsoft.jan.widget.EmptyView;
 import com.utsoft.jan.widget.PortraitView;
 import com.utsoft.jan.widget.recycler.RecyclerAdapter;
 import com.utsoft.jan.wtalker.R;
+import com.utsoft.jan.wtalker.activities.PersonalToolbarActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -105,7 +106,7 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
         @OnClick(R.id.im_portrait)
         void onPortraitClick() {
             //显示信息
-
+            PersonalToolbarActivity.show(getActivity(),mData.getId());
         }
     }
 }

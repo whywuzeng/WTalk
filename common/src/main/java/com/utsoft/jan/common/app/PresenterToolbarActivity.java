@@ -73,7 +73,7 @@ public abstract class PresenterToolbarActivity<Presenter extends BaseContract.Pr
         }
     }
 
-    private void hideDialogLoading(){
+    protected void hideDialogLoading(){
         ProgressDialog dialog = this.mProgressDialog;
         if (dialog != null)
         {
@@ -81,6 +81,7 @@ public abstract class PresenterToolbarActivity<Presenter extends BaseContract.Pr
             dialog.dismiss();
         }
     }
+
 
     @Override
     public void setPresenter(Presenter presenter) {

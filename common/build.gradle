@@ -36,6 +36,10 @@ dependencies {
     api "net.qiujuer.genius:kit-handler:$rootProject.ext.geniusVersion"
     api "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     api "de.hdodenhof:circleimageview:$rootProject.ext.circleimageviewVersion"
+
+    // 空气面板
+    api "net.qiujuer.widget:airpanel:$rootProject.ext.airpanelVersion"
+
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"
     testImplementation 'junit:junit:4.12'

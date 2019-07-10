@@ -12,6 +12,9 @@ import com.utsoft.jan.factory.data.user.UserDispatcher;
 import com.utsoft.jan.factory.model.RspModel;
 import com.utsoft.jan.factory.persistence.Account;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 /**
  * Created by Administrator on 2019/6/26.
  * <p>
@@ -40,6 +43,8 @@ public class Factory {
 
     private final static Factory instance;
 
+    private final Executor mExecutor;
+
     static {
         instance = new Factory();
     }
@@ -48,6 +53,8 @@ public class Factory {
         gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
                 .create();
+        //初始化线程池
+        mExecutor = Executors.newFixedThreadPool(4);
     }
 
     public static Gson getGson(){
@@ -106,6 +113,10 @@ public class Factory {
                 decodeRspCode(R.string.data_rsp_error_unknown, mCallBack);
                 break;
         }
+    }
+
+    public static void runOnAsync(Runnable runnable){
+        instance.mExecutor.execute(runnable);
     }
 
     /**

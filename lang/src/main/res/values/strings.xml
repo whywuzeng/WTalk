@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">lang</string>
+
+    <string name="btn_send_start">发起聊天</string>
 </resources>
