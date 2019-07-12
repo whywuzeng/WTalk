@@ -2,9 +2,9 @@ package com.utsoft.jan.factory.data;
 
 import android.support.annotation.NonNull;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 import com.utsoft.jan.factory.data.helper.DbHelper;
+import com.utsoft.jan.factory.model.db.BaseDbModel;
 import com.utsoft.jan.utils.CollectionUtil;
 
 import net.qiujuer.genius.kit.reflect.Reflector;
@@ -22,7 +22,7 @@ import java.util.List;
  * <p>
  * com.utsoft.jan.factory.data
  */
-public abstract class BaseDbRepository<Data extends BaseModel>
+public abstract class BaseDbRepository<Data extends BaseDbModel<Data>>
         implements DbHelper.ChangedListener<Data>,
         DbDataSource<Data>,
         QueryTransaction.QueryResultListCallback<Data> {
@@ -73,12 +73,23 @@ public abstract class BaseDbRepository<Data extends BaseModel>
     }
 
     private void insertOrReplace(Data data) {
-        int index = mDataList.indexOf(data);
+        int index = indexOf(data);
         if (index>=0){
             replace(index,data);
         }else {
             insert(data);
         }
+    }
+
+    private int indexOf(Data newData) {
+        int index = -1;
+        for (Data data : mDataList) {
+            index++;
+            if (data.isSame(newData)){
+                return index;
+            }
+        }
+        return -1;
     }
 
     private void insert(Data data) {
