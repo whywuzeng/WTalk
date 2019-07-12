@@ -38,7 +38,7 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        initArgs();
+        initArgs(getArguments());
     }
 
     @Nullable
@@ -84,7 +84,7 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
 
     protected abstract int getContentLayoutId();
 
-    protected void initArgs() {
+    protected void initArgs(Bundle arguments) {
 
     }
 

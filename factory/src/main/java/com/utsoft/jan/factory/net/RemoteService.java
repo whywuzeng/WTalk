@@ -4,7 +4,9 @@ import com.utsoft.jan.factory.model.RspModel;
 import com.utsoft.jan.factory.model.api.account.AccountRspModel;
 import com.utsoft.jan.factory.model.api.account.LoginModel;
 import com.utsoft.jan.factory.model.api.account.RegisterModel;
+import com.utsoft.jan.factory.model.api.message.MsgCreateModel;
 import com.utsoft.jan.factory.model.api.user.UserUpdateModel;
+import com.utsoft.jan.factory.model.card.MessageCard;
 import com.utsoft.jan.factory.model.card.UserCard;
 
 import java.util.List;
@@ -51,4 +53,8 @@ public interface RemoteService {
     // 查询某人的信息
     @GET("user/{userId}")
     Call<RspModel<UserCard>> userFind(@Path("userId") String userId);
+
+    // 发送消息的接口
+    @POST("msg")
+    Call<RspModel<MessageCard>> msgPush(@Body MsgCreateModel model);
 }

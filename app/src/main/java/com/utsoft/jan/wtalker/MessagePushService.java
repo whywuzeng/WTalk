@@ -7,6 +7,7 @@ import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
+import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.data.helper.AccountHelper;
 import com.utsoft.jan.factory.persistence.Account;
 
@@ -32,6 +33,15 @@ public class MessagePushService extends GTIntentService {
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
         // 透传消息的处理，详看SDK demo
+        byte[] payload = msg.getPayload();
+        if (payload!=null){
+            String message = new String(payload);
+            onMessageArrived(message);
+        }
+    }
+
+    private void onMessageArrived(String message) {
+        Factory.dispatchPush(message);
     }
 
     @Override

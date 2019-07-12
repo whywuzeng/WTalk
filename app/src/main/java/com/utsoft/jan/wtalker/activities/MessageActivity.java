@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.utsoft.jan.common.app.ToolbarActivity;
 import com.utsoft.jan.factory.model.Author;
 import com.utsoft.jan.wtalker.R;
+import com.utsoft.jan.wtalker.frags.message.ChatUserFragment;
 
 /**
  * Created by Administrator on 2019/7/10.
@@ -48,10 +49,11 @@ public class MessageActivity extends ToolbarActivity {
     protected void initWidget() {
         super.initWidget();
         //fragment加入
+        ChatUserFragment chatUserFragment = ChatUserFragment.newInstance(mReceiverId);
 
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.lay_container,null);
+        ft.add(R.id.lay_container,chatUserFragment);
         ft.commit();
     }
 }

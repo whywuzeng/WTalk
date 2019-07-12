@@ -3,6 +3,7 @@ package com.utsoft.jan.factory.model.db;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Objects;
  * <p>
  * com.utsoft.jan.factory.model.db
  */
+@Table(database = AppDataBase.class)
 public class Message extends BaseDbModel<Message> implements Serializable {
     // 接收者类型
     public static final int RECEIVER_TYPE_NONE = 1;

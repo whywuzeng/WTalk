@@ -1,11 +1,15 @@
 package com.utsoft.jan.wtalker.frags.message;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
@@ -16,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
+import com.utsoft.jan.factory.persenter.message.ChatContract;
 import com.utsoft.jan.factory.persistence.Account;
 import com.utsoft.jan.widget.MessageLayout;
 import com.utsoft.jan.widget.PortraitView;
@@ -37,7 +42,8 @@ import butterknife.OnClick;
  * <p>
  * com.utsoft.jan.wtalker.frags.message
  */
-public abstract class ChatFragment extends PresenterFragment {
+public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatContract.Presenter>
+        implements ChatContract.View<InitModel> {
 
     @BindView(R.id.view_stub_header)
     ViewStub viewStubHeader;
@@ -52,11 +58,20 @@ public abstract class ChatFragment extends PresenterFragment {
     @BindView(R.id.lay_content)
     MessageLayout layContent;
 
+    public static final String KEY_RECEIVER_ID ="key_receiver_id";
+
     private RecyclerAdapter<Message> mAdapter;
+    protected String mReceiverId;
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_chat_common;
+    }
+
+    @Override
+    protected void initArgs(Bundle arguments) {
+        super.initArgs(arguments);
+        mReceiverId = arguments.getString(KEY_RECEIVER_ID);
     }
 
     @Override
@@ -66,6 +81,45 @@ public abstract class ChatFragment extends PresenterFragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new Adapter();
         recycler.setAdapter(mAdapter);
+        initEidtContent();
+
+    }
+
+    private void initEidtContent() {
+        editContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String content = s.toString().trim();
+                boolean needSending = !TextUtils.isEmpty(content);
+                //设置状态 改变对应icon
+                imSubmit.setActivated(needSending);
+            }
+        });
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.start();
+    }
+
+    @Override
+    public RecyclerAdapter<Message> getRecyclerAdapter() {
+        return mAdapter;
+    }
+
+    @Override
+    public void onAdapterDataChange() {
 
     }
 
@@ -145,6 +199,17 @@ public abstract class ChatFragment extends PresenterFragment {
             super.onBind(mData);
             SpannableString spannableString = new SpannableString(mData.getContent());
             txtContent.setText(spannableString);
+        }
+    }
+
+    @OnClick(R.id.im_submit)
+    void onViewClick(){
+        if (imSubmit.isActivated()){
+            String content = editContent.getText().toString();
+            editContent.setText("");
+            mPresenter.pushText(content);
+        }else {
+            //more 操作
         }
     }
 

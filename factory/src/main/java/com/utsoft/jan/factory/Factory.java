@@ -8,8 +8,12 @@ import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.factory.data.DataSource;
+import com.utsoft.jan.factory.data.message.MessageDispatcher;
 import com.utsoft.jan.factory.data.user.UserDispatcher;
+import com.utsoft.jan.factory.model.PushModel;
 import com.utsoft.jan.factory.model.RspModel;
+import com.utsoft.jan.factory.model.card.MessageCard;
+import com.utsoft.jan.factory.model.card.UserCard;
 import com.utsoft.jan.factory.persistence.Account;
 
 import java.util.concurrent.Executor;
@@ -119,6 +123,58 @@ public class Factory {
         instance.mExecutor.execute(runnable);
     }
 
+    public static void dispatchPush(String message) {
+        if (!Account.isLogin())
+            return;
+
+        PushModel model = PushModel.decode(message);
+
+        for (PushModel.Entity entity : model.getEntities()) {
+            switch (entity.type){
+                case PushModel.ENTITY_TYPE_LOGOUT:
+                    instance.logout();
+                    // 退出情况下，直接返回，并且不可继续
+                    return;
+
+                case PushModel.ENTITY_TYPE_MESSAGE: {
+                    // 普通消息
+                    MessageCard card = getGson().fromJson(entity.content, MessageCard.class);
+                    getMessageCenter().dispathcher(card);
+                    break;
+                }
+
+                case PushModel.ENTITY_TYPE_ADD_FRIEND: {
+                    // 好友添加
+                    UserCard card = getGson().fromJson(entity.content, UserCard.class);
+                    getUserCenter().dispatch(card);
+                    break;
+                }
+
+                case PushModel.ENTITY_TYPE_ADD_GROUP: {
+                    // 添加群
+//                    GroupCard card = getGson().fromJson(entity.content, GroupCard.class);
+//                    getGroupCenter().dispatch(card);
+                    break;
+                }
+
+                case PushModel.ENTITY_TYPE_ADD_GROUP_MEMBERS:
+                case PushModel.ENTITY_TYPE_MODIFY_GROUP_MEMBERS: {
+                    // 群成员变更, 回来的是一个群成员的列表
+//                    Type type = new TypeToken<List<GroupMemberCard>>() {
+//                    }.getType();
+//                    List<GroupMemberCard> card = getGson().fromJson(entity.content, type);
+//                    // 把数据集合丢到数据中心处理
+//                    getGroupCenter().dispatch(card.toArray(new GroupMemberCard[0]));
+                    break;
+                }
+                case PushModel.ENTITY_TYPE_EXIT_GROUP_MEMBERS: {
+                    // TODO 成员退出的推送
+                }
+
+            }
+        }
+    }
+
     /**
      * 重新退出
      */
@@ -134,5 +190,9 @@ public class Factory {
 
     public static UserDispatcher getUserCenter(){
         return UserDispatcher.getInstance();
+    }
+
+    public static MessageDispatcher getMessageCenter(){
+        return MessageDispatcher.getIntances();
     }
 }

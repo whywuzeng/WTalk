@@ -164,7 +164,7 @@ public class UserHelper {
         return user;
     }
 
-    private static User findFromLocal(String userID) {
+    public static User findFromLocal(String userID) {
        return SQLite.select()
                 .from(User.class)
                 .where(User_Table.id.eq(userID))
