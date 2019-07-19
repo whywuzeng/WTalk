@@ -23,7 +23,7 @@ public abstract class ToolbarActivity extends Activity {
         initToolbar();
     }
 
-    private void initToolbar(){
+    protected void initToolbar(){
         if (mToolbar !=null){
             setSupportActionBar(mToolbar);
         }

@@ -38,9 +38,10 @@
                 />
             <ImageView
                 android:id="@+id/im_search"
-                android:layout_width="@dimen/len_40"
-                android:layout_height="@dimen/len_40"
+                android:layout_width="@dimen/len_32"
+                android:layout_height="@dimen/len_32"
                 android:layout_gravity="end|center_vertical"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_search"
                 android:tint="@color/textLight"
                 />
@@ -60,6 +61,7 @@
         android:layout_width="@dimen/len_52"
         android:layout_height="@dimen/len_52"
         android:src="@drawable/ic_add"
+        android:scaleType="centerInside"
         android:tint="@color/textLight"
         android:layout_marginBottom="@dimen/len_68"
         android:layout_marginEnd="@dimen/len_16"

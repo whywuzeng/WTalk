@@ -9,6 +9,7 @@
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/lay_coordinator"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

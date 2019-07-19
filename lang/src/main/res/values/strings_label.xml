@@ -10,6 +10,7 @@
     <string name="label_register">注册</string>
     <string name="label_name">名字</string>
     <string name="label_search">搜索</string>
+    <string name="label_user">个人</string>
 
     <string name="label_permission_network">网络访问</string>
     <string name="label_permission_network_desc">用于即时通讯传输</string>

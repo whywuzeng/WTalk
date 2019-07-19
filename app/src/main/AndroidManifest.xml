@@ -52,7 +52,7 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.TransStatusBar"
+            android:theme="@style/AppTheme.Main"
             android:screenOrientation="portrait"
             />
 
@@ -83,7 +83,10 @@
                   android:theme="@style/AppTheme.TransStatusBar"
             />
         <activity android:name=".activities.PersonalToolbarActivity"/>
-        <activity android:name=".activities.MessageActivity"/>
+
+        <activity android:name=".activities.MessageActivity"
+                  android:theme="@style/AppTheme.TransStatusBar"
+                  android:screenOrientation="portrait"/>
 
     </application>
 

@@ -6,6 +6,7 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 import com.utsoft.jan.factory.model.db.AppDataBase;
+import com.utsoft.jan.factory.model.db.Message;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class DbHelper {
                         ModelAdapter<Model> adapter = FlowManager.getModelAdapter(aClass);
                         adapter.saveAll(Arrays.asList(models));
                         instance.notifySave(aClass, models);
+
                     }
                 }).build().execute();
     }
@@ -65,6 +67,16 @@ public class DbHelper {
                 item.onDataSave(models);
             }
         }
+
+        if (aClass.equals(Message.class))
+        {
+            UpdateSession((Message[])models);
+        }
+    }
+
+    private void UpdateSession(Message... models) {
+        //根据一個ID 要生成多個ID 一樣的session、然后在根据message是设置内容
+
     }
 
     private <Model extends BaseModel> Set<ChangedListener> getListener(Class<Model> aClass) {

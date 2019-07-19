@@ -19,5 +19,9 @@
 
     <style name="AppTheme.TransStatusBar" parent="AppTheme.TransStatusBar.Base"/>
 
-
+    <!--给主界面加一些特效-->
+    <style name="AppTheme.Main" parent="AppTheme.TransStatusBar">
+        <!--colorControlHighlight用于控制所有可点击的View的涟漪效果颜色-->
+        <item name="colorControlHighlight">@color/textSecond</item>
+    </style>
 </resources>

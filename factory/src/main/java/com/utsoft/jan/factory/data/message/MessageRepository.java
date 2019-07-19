@@ -1,11 +1,15 @@
 package com.utsoft.jan.factory.data.message;
 
+import android.support.annotation.NonNull;
+
 import com.raizlabs.android.dbflow.sql.language.OperatorGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 import com.utsoft.jan.factory.data.BaseDbRepository;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.Message_Table;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,5 +50,11 @@ public class MessageRepository extends BaseDbRepository<Message> implements Mess
     protected boolean isRequired(Message message) {
         return (receiverId.equalsIgnoreCase(message.getSender().getId())) ||
                 (message.getReceiver() != null && receiverId.equalsIgnoreCase(message.getReceiver().getId()));
+    }
+
+    @Override
+    public void onListQueryResult(QueryTransaction transaction, @NonNull List<Message> tResult) {
+        Collections.reverse(tResult);
+        super.onListQueryResult(transaction, tResult);
     }
 }

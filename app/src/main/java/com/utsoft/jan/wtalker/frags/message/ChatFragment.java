@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -43,9 +44,8 @@ import butterknife.OnClick;
  * com.utsoft.jan.wtalker.frags.message
  */
 public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatContract.Presenter>
-        implements ChatContract.View<InitModel> {
+        implements ChatContract.View<InitModel>, AppBarLayout.OnOffsetChangedListener {
 
-    @BindView(R.id.view_stub_header)
     ViewStub viewStubHeader;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
@@ -58,7 +58,9 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     @BindView(R.id.lay_content)
     MessageLayout layContent;
 
-    public static final String KEY_RECEIVER_ID ="key_receiver_id";
+    public static final String KEY_RECEIVER_ID = "key_receiver_id";
+    @BindView(R.id.lay_coordinator)
+    CoordinatorLayout layCoordinator;
 
     private RecyclerAdapter<Message> mAdapter;
     protected String mReceiverId;
@@ -76,13 +78,14 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
     @Override
     protected void initWidget() {
-        super.initWidget();
+        viewStubHeader = mRoot.findViewById(R.id.view_stub_header);
         initViewStubHeader(viewStubHeader);
+        super.initWidget();
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new Adapter();
         recycler.setAdapter(mAdapter);
         initEidtContent();
-
+        appbar.addOnOffsetChangedListener(this);
     }
 
     private void initEidtContent() {
@@ -124,6 +127,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     }
 
     protected abstract void initViewStubHeader(ViewStub viewStubHeader);
+
 
     class Adapter extends RecyclerAdapter<Message> {
 
@@ -203,12 +207,13 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     }
 
     @OnClick(R.id.im_submit)
-    void onViewClick(){
-        if (imSubmit.isActivated()){
+    void onViewClick() {
+        if (imSubmit.isActivated()) {
             String content = editContent.getText().toString();
             editContent.setText("");
             mPresenter.pushText(content);
-        }else {
+        }
+        else {
             //more 操作
         }
     }

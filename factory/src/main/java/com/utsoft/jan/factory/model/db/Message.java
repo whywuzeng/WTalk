@@ -4,6 +4,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.utsoft.jan.factory.persistence.Account;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -137,8 +138,14 @@ public class Message extends BaseDbModel<Message> implements Serializable {
      * 如果该消息为普通消息，那么返回跟我聊天的人是谁，
      * 要么是接收者，要么是发送者
      */
-    User getOther(){
-        return null;
+    public User getOther(){
+        String id = Account.getUser().getId();
+        if (id.equals(sender.getId()))
+        {
+            return receiver;
+        }else {
+            return sender;
+        }
     }
 
     /**
