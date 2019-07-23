@@ -20,7 +20,7 @@ public class SessionRepository extends BaseDbRepository<Session> implements Sess
         super.load(callback);
         SQLite.select()
                 .from(Session.class)
-                .orderBy(Session_Table.lastModify,true)
+                .orderBy(Session_Table.lastModify,false)
                 .async()
                 .queryListResultCallback(this)
                 .execute();

@@ -1,12 +1,15 @@
 package com.utsoft.jan.factory.data.helper;
 
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
+import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 import com.utsoft.jan.factory.model.db.AppDataBase;
 import com.utsoft.jan.factory.model.db.Message;
+import com.utsoft.jan.factory.model.db.Session;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -76,6 +79,46 @@ public class DbHelper {
 
     private void UpdateSession(Message... models) {
         //根据一個ID 要生成多個ID 一樣的session、然后在根据message是设置内容
+        final Set<Session.Identity> identities = new HashSet<>();
+        for (Message model : models) {
+            Session.Identity identity =  Session.createSessionIdentity(model);
+            identities.add(identity);
+        }
+
+        //一个 异步的数据库操作
+        DatabaseDefinition database = FlowManager.getDatabase(AppDataBase.class);
+        database.beginTransactionAsync(new ITransaction() {
+            @Override
+            public void execute(DatabaseWrapper databaseWrapper) {
+                ModelAdapter<Session> adapter = FlowManager.getModelAdapter(Session.class);
+                Session[] sessions = new Session[identities.size()];
+                int index = 0;
+                for (Session.Identity identity : identities) {
+                    Session session;
+                    String id = identity.getId();
+                    session = SessionHelper.findFromLocal(id);
+                    if (session == null)
+                    {
+                        session = new Session(identity);
+                    }
+                    session.load();
+                    session.refreshNow();
+                    adapter.save(session);
+                    sessions[index++] = session;
+                }
+                instance.notifySave(Session.class,sessions);
+            }
+        }).success(new Transaction.Success() {
+            @Override
+            public void onSuccess(Transaction transaction) {
+
+            }
+        }).error(new Transaction.Error() {
+            @Override
+            public void onError(Transaction transaction, Throwable error) {
+
+            }
+        }).execute();
 
     }
 

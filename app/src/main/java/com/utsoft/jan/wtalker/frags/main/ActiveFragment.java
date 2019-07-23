@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.data.session.SessionRepository;
 import com.utsoft.jan.factory.model.db.Session;
-import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.persenter.session.SessionContract;
 import com.utsoft.jan.factory.persenter.session.SessionPresenter;
+import com.utsoft.jan.utils.DateTimeUtil;
 import com.utsoft.jan.widget.EmptyView;
 import com.utsoft.jan.widget.PortraitView;
 import com.utsoft.jan.widget.recycler.RecyclerAdapter;
@@ -87,11 +86,12 @@ public class ActiveFragment extends PresenterFragment<SessionContract.Presenter>
 
             @Override
             protected void onBind(Session mData) {
-                User other = mData.getMessage().getOther();
-                imPortrait.setup(Glide.with(ActiveFragment.this), other.getPortrait());
-                txtName.setText(other.getName());
+//                User other = mData.getMessage().getOther();
+//                imPortrait.setup(Glide.with(ActiveFragment.this), other.getPortrait());
+//                txtName.setText(other.getName());
                 txtDesc.setText(mData.getLastMsgContent());
-                txtModify.setText(mData.getLastModify().toString());
+                String sampleDate = DateTimeUtil.getSampleDate(mData.getLastModify());
+                txtModify.setText(sampleDate);
             }
         }
     }

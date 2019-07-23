@@ -45,7 +45,7 @@ public class UserHelper {
                 if (rspModel.success()) {
                     UserCard userCard = rspModel.getResult();
 //                    // 唤起进行保存的操作
-//                    Factory.getUserCenter().dispatch(userCard);
+                    Factory.getUserCenter().dispatch(userCard);
                     // 返回成功
                     callback.onDataLoad(userCard);
                 } else {

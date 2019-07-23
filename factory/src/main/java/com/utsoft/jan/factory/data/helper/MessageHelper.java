@@ -1,5 +1,6 @@
 package com.utsoft.jan.factory.data.helper;
 
+import com.raizlabs.android.dbflow.sql.language.OperatorGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.model.RspModel;
@@ -65,6 +66,16 @@ public class MessageHelper {
                 Factory.getMessageCenter().dispathcher(card);
             }
         });
+
+    }
+
+    public static Message findLastMessage(String id) {
+       return SQLite.select()
+                .from(Message.class)
+                .where(OperatorGroup.clause().and(Message_Table.sender_id.eq(id)))
+                .or(Message_Table.receiver_id.eq(id))
+                .orderBy(Message_Table.createAt,false)
+                .querySingle();
 
     }
 }
