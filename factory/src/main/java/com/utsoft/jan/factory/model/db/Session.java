@@ -29,6 +29,14 @@ public class Session extends BaseDbModel<Session>{
     @Column
     private String pictureUrl;
 
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     @Column
     private Date lastModify;
 
@@ -134,10 +142,12 @@ public class Session extends BaseDbModel<Session>{
                 User user = UserHelper.findFromLocal(id);
                 this.name = user.getName();
                 this.pictureUrl = user.getPortrait();
-                this.lastModify = new Date();
+                this.lastModify = new Date(System.currentTimeMillis());
                 this.lastMsgContent = "";
             }else {
+
                 User other = lastMessage.getOther();
+                other.load();
                 this.name = other.getName();
                 this.lastModify = lastMessage.getCreateAt();
                 this.lastMsgContent = lastMessage.getContent();
