@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.utsoft.jan.factory.Factory;
+import com.utsoft.jan.factory.data.helper.UserHelper;
 import com.utsoft.jan.factory.model.api.account.AccountRspModel;
 import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.model.db.User_Table;
@@ -89,10 +90,20 @@ public class Account {
     }
 
     public static boolean isComplete() {
-        if (isLogin()){
+        if (isLogin()&&isUserMessageComplete()){
             return true;
         }
         return false;
+    }
+
+    public static boolean isUserMessageComplete(){
+        User localUser;
+        if (TextUtils.isEmpty(sUserId)){
+            localUser = new User();
+        }else {
+            localUser = UserHelper.findFromLocal(sUserId);
+        }
+        return localUser.isContentComplete();
     }
 
     public static User getUser() {

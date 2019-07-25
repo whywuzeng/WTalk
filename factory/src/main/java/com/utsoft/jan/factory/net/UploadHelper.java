@@ -8,14 +8,12 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 import com.utsoft.jan.utils.HashUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.text.DateFormat;
 
 /**
  * Created by Administrator on 2019/7/24.
@@ -36,6 +34,7 @@ public class UploadHelper {
 
     public static CloudBlobContainer getBlobContainer(){
 
+        CloudBlobContainer container = null;
         try {
             CloudStorageAccount account = CloudStorageAccount
                     .parse(storageConnectionString);
@@ -47,7 +46,7 @@ public class UploadHelper {
             // The container name must be lower case
             // Append a random UUID to the end of the container name so that
             // this sample can be run more than once in quick succession.
-            CloudBlobContainer container = blobClient.getContainerReference("ZWLbasicscontainer");
+             container = blobClient.getContainerReference("zwlbasicscontainer");
 
 //            + UUID.randomUUID().toString().replace("-", "")
 
@@ -60,6 +59,7 @@ public class UploadHelper {
         } catch (StorageException e) {
             e.printStackTrace();
         }
+        return container;
     }
 
     public static String upload(String objKey, String path){
@@ -73,6 +73,9 @@ public class UploadHelper {
                     .setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
 
             CloudBlobContainer container = getBlobContainer();
+
+            if (container == null)
+                return null;
 
             // Set the permissions on the container
             container.uploadPermissions(containerPermissions);
@@ -90,14 +93,8 @@ public class UploadHelper {
             // Upload text to the blob
             blob1.uploadFromFile(path);
 
-            // List the blobs in a container, loop over them and
-            // output the URI of each of them
-            for (ListBlobItem blobItem : container.listBlobs()) {
+           return directoryReference.getUri()+objKey;
 
-                return blobItem.getUri().toString();
-            }
-
-            return null;
         } catch (StorageException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
@@ -117,7 +114,7 @@ public class UploadHelper {
     private static String getPortraitKey(String path) {
         String md5String = HashUtil.getMD5String(new File(path));
         String dateString = getDateString();
-        return String.format("portrait%s%s",dateString,md5String);
+        return String.format("portrait%s%s.jpg",dateString,md5String);
     }
 
     /**

@@ -12,7 +12,6 @@ import com.utsoft.jan.factory.data.helper.UserHelper;
 import com.utsoft.jan.factory.data.session.SessionRepository;
 import com.utsoft.jan.factory.model.db.Session;
 import com.utsoft.jan.factory.model.db.User;
-import com.utsoft.jan.factory.net.UploadHelper;
 import com.utsoft.jan.factory.persenter.session.SessionContract;
 import com.utsoft.jan.factory.persenter.session.SessionPresenter;
 import com.utsoft.jan.utils.DateTimeUtil;
@@ -67,7 +66,6 @@ public class ActiveFragment extends PresenterFragment<SessionContract.Presenter>
         String userId = session.getId();
         User user = UserHelper.searchFirstofLocal(userId);
         MessageActivity.show(getActivity(),user);
-        UploadHelper.getIntances().dispathcher();
     }
 
     @Override

@@ -1,9 +1,13 @@
 package com.utsoft.jan.factory.persenter.user;
 
+import android.text.TextUtils;
+
+import com.utsoft.jan.factory.Factory;
 import com.utsoft.jan.factory.data.DataSource;
 import com.utsoft.jan.factory.data.helper.UserHelper;
 import com.utsoft.jan.factory.model.api.user.UserUpdateModel;
 import com.utsoft.jan.factory.model.card.UserCard;
+import com.utsoft.jan.factory.net.UploadHelper;
 import com.utsoft.jan.factory.presenter.BasePresenter;
 
 /**
@@ -36,8 +40,37 @@ public class UserPresenter extends BasePresenter<UserContract.View> implements U
     }
 
     @Override
-    public void loadUserMessage() {
-        UserUpdateModel model = new UserUpdateModel("吴增", "http://www.baidu.com", "这是测试", 1);
-        UserHelper.update(model,this);
+    public void loadUserMessage(final String portrait, final String editDescription, final int sex) {
+        start();
+
+        final UserContract.View view = getView();
+
+        if (TextUtils.isEmpty(editDescription))
+        {
+            if (view!=null)
+            {
+                view.showErrorMsg(com.utsoft.jan.common.R.string.data_account_update_invalid_parameter);
+            }
+            return;
+        }
+
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+                String url = UploadHelper.uploadPortrait(portrait);
+                if (TextUtils.isEmpty(url))
+                {
+                    if (view!=null)
+                    {
+                        view.showErrorMsg(com.utsoft.jan.common.R.string.data_picture_upload_error);
+                    }
+
+                }
+
+                UserUpdateModel model = new UserUpdateModel("", url, editDescription, sex);
+                UserHelper.update(model,UserPresenter.this);
+            }
+        });
+
     }
 }

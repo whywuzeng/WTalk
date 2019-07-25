@@ -1,6 +1,8 @@
 package com.utsoft.jan.factory.model.db;
 
 
+import android.text.TextUtils;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -176,5 +178,11 @@ public class User extends BaseDbModel<User> implements Author {
                         && Objects.equals(sex, old.sex)
                         && Objects.equals(isFollow, old.isFollow)
         );
+    }
+
+    public boolean isContentComplete(){
+        return !TextUtils.isEmpty(getName())
+                &&!TextUtils.isEmpty(getPortrait())
+                &&!TextUtils.isEmpty(getId());
     }
 }

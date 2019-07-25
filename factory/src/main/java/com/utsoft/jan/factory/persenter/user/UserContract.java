@@ -16,6 +16,6 @@ public interface UserContract {
     }
 
     interface Presenter extends BaseContract.Presenter{
-        void loadUserMessage();
+        void loadUserMessage(String portrait, String mPortrait, int sex);
     }
 }

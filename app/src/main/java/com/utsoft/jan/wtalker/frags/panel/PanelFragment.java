@@ -11,6 +11,7 @@ import com.utsoft.jan.wtalker.R;
  * com.utsoft.jan.wtalker.frags.panel
  */
 public class PanelFragment extends Fragment {
+    //3种布局，
 
     @Override
     protected int getContentLayoutId() {

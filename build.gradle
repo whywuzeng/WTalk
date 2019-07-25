@@ -57,4 +57,6 @@ ext{
     easyPMVersion = "0.3.0"
 
     airpanelVersion = "1.1.0"
+
+    ucropVersion = "2.2.0-native"
 }

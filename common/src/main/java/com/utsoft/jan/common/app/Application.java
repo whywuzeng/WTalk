@@ -8,6 +8,7 @@ import android.widget.Toast;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,4 +91,26 @@ public class Application extends android.app.Application {
         showToast(instance.getString(msgId));
     }
 
+    /**
+     * 返回头像tmp临时缓存文件夹
+     */
+    public static File getPortraitTmpFile() {
+        //获得头像目录
+        File file = new File(getCacheFile(), "portrait");
+
+        file.mkdirs();
+        File[] files = file.listFiles();
+        if (files != null && files.length > 0) {
+            for (File file1 : file.listFiles()) {
+                file1.delete();
+            }
+        }
+
+        File path = new File(file, System.currentTimeMillis() + ".jpg");
+        return path.getAbsoluteFile();
+    }
+
+    private static File getCacheFile() {
+        return instance.getCacheDir();
+    }
 }

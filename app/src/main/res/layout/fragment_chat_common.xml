@@ -48,6 +48,7 @@
         >
 
         <ImageView
+            android:id="@+id/im_emoji"
             android:layout_width="@dimen/len_44"
             android:layout_height="@dimen/len_44"
             android:padding="8dp"
@@ -56,6 +57,7 @@
             />
 
         <ImageView
+            android:id="@+id/im_record"
             android:layout_width="@dimen/len_44"
             android:layout_height="@dimen/len_44"
             android:padding="8dp"

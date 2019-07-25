@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.utsoft.jan.common.app.Fragment;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
@@ -29,6 +30,7 @@ import com.utsoft.jan.widget.recycler.RecyclerAdapter;
 import com.utsoft.jan.wtalker.R;
 
 import net.qiujuer.genius.ui.widget.Loading;
+import net.qiujuer.widget.airpanel.AirPanel;
 
 import java.util.Objects;
 
@@ -61,9 +63,17 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     public static final String KEY_RECEIVER_ID = "key_receiver_id";
     @BindView(R.id.lay_coordinator)
     CoordinatorLayout layCoordinator;
+    @BindView(R.id.im_emoji)
+    ImageView imEmoji;
+    @BindView(R.id.im_record)
+    ImageView imRecord;
 
     private RecyclerAdapter<Message> mAdapter;
     protected String mReceiverId;
+
+    private AirPanel.Boss mPanelBoss;
+
+    private Fragment mPanelFragment;
 
     @Override
     protected int getContentLayoutId() {
@@ -81,6 +91,14 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         viewStubHeader = mRoot.findViewById(R.id.view_stub_header);
         initViewStubHeader(viewStubHeader);
         super.initWidget();
+
+//        mPanelBoss初始化
+
+//        mPanelBoss stateChangeListener
+        //面板  和 键盘的改变都可以 监听到，可以影响，appbarlayout的缩放.
+
+        //mPanelFragment 初始化
+
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new Adapter();
         recycler.setAdapter(mAdapter);
@@ -127,6 +145,19 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     }
 
     protected abstract void initViewStubHeader(ViewStub viewStubHeader);
+
+
+    @OnClick(R.id.im_emoji)
+    public void onImEmojiClicked() {
+        //打开底部界面
+        //显示 face view
+    }
+
+    @OnClick(R.id.im_record)
+    public void onImRecordClicked() {
+        //打开底部界面
+        //显示 Record view
+    }
 
 
     class Adapter extends RecyclerAdapter<Message> {

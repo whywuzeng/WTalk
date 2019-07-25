@@ -185,6 +185,7 @@ public abstract class RecyclerAdapter<Data>
         return false;
     }
 
+
     public interface AdapterListener<Data>{
         void onItemClick(RecyclerAdapter.ViewHolder holder,Data data);
         void onItemLongClick(RecyclerAdapter.ViewHolder holder,Data data);
