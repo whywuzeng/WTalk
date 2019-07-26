@@ -78,6 +78,7 @@ public class Application extends android.app.Application {
         return instance;
     }
 
+
     public static void showToast(final String msg){
         Run.onUiAsync(new Action() {
             @Override

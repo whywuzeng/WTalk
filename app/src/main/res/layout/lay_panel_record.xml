@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lay_panel_record"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <net.qiujuer.genius.ui.widget.FloatActionButton
         android:id="@+id/im_record"
-        android:background="@drawable/sel_bg_record"
-        android:layout_width="@dimen/portraitSize"
-        android:layout_height="@dimen/portraitSize"/>
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:padding="@dimen/len_20"
+        android:layout_gravity="center"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:tint="@color/white"
+        android:src="@drawable/ic_record"
+        app:gBackgroundColor="@color/colorAccent"
+        app:gTouchColor="@color/white_alpha_16"
+        app:shadowAlpha="128"
+        app:shadowColor="@color/colorAccent"
+        app:shadowDx="0dp"
+        app:shadowDy="0dp"
+        app:shadowRadius="@dimen/len_8"
+        />
 
 </android.support.constraint.ConstraintLayout>
