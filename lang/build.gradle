@@ -3,8 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
 
-
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
@@ -14,6 +12,17 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
+    task makeJar(type:Copy){
+        delete 'build/libs/myDevPackage.jar'
+        from('build/intermediates/intermediate-jars/debug/')
+        into('build/libs/')
+        include('classes.jar')
+        rename('classes.jar','myDevPackage.jar')
+    }
+
+//    makeJar.dependsOn(build)
+
 
     buildTypes {
         release {
@@ -31,7 +40,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
 }
+

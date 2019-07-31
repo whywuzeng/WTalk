@@ -42,8 +42,8 @@ public abstract class RecyclerAdapter<Data>
         this(new ArrayList<Data>(),mAdapterListener);
     }
 
-    public RecyclerAdapter(List<Data> mListData, AdapterListener<Data> mAdapterListener) {
-        this.mListData = mListData;
+    public RecyclerAdapter(@NonNull List<Data> mListData, AdapterListener<Data> mAdapterListener) {
+        this.mListData = mListData == null?new ArrayList<Data>():mListData;
         this.mAdapterListener = mAdapterListener;
     }
     /**

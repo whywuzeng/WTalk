@@ -1,6 +1,8 @@
 package com.utsoft.jan.face;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.ArrayMap;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -12,8 +14,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -30,6 +35,11 @@ public class Face {
     private static List<EmojiTab> emojiTabs;
 
     /**
+     * 少于1000个元素 用Android自己的ArrayMap 集合。
+     */
+    private static ArrayMap<String,Emoji> arrayMap = new ArrayMap<>();
+
+    /**
      * 拿到所有的表情面板 和 表情个数
      */
     public static List<EmojiTab> all() {
@@ -39,8 +49,46 @@ public class Face {
 
     private static void init() {
         if (emojiTabs == null) {
-            initAssets();
+            EmojiTab tab = initAssets();
+//            得到ResourceFace资源
+            ArrayList<EmojiTab> tabArrayList = new ArrayList<>();
+            if (tab!=null)
+            {
+                tabArrayList.add(tab);
+            }
+
+            EmojiTab face = initResourceFace();
+            if (face!=null)
+            {
+                tabArrayList.add(face);
+            }
+
+            for (EmojiTab emojiTab : tabArrayList) {
+                emojiTab.copyToMap(arrayMap);
+            }
+
+            emojiTabs = Collections.unmodifiableList(tabArrayList);
         }
+    }
+
+    private static EmojiTab initResourceFace() {
+        //根据资源ID去拿资源
+        List<Emoji> emojis = new ArrayList<>();
+
+        Resources resources = Application.getInstance().getApplicationContext().getResources();
+        String packageName = Application.getInstance().getApplicationContext().getPackageName();
+        for (int i = 1; i < 142; i++) {
+            String drawFormat = String.format(Locale.ENGLISH, "face_base_%03d", i);
+            String keyFormat = String.format(Locale.ENGLISH, "fb%03d", i);
+            int resId = resources.getIdentifier(drawFormat, "drawable", packageName);
+            if (resId == 0)
+                continue;
+
+            Emoji emoji = new Emoji(keyFormat, resId);
+            emojis.add(emoji);
+        }
+
+        return new EmojiTab(emojis, "FACENAME");
     }
 
     private static EmojiTab initAssets() {
@@ -103,7 +151,7 @@ public class Face {
         // ZipFile 使用
         ZipFile srcFile = new ZipFile(zipFile);
         //zf.entries
-        for (Enumeration<? extends ZipEntry> entries = srcFile.entries();entries.hasMoreElements()) {
+        for (Enumeration<? extends ZipEntry> entries = srcFile.entries();entries.hasMoreElements();) {
             // ZipEntry 取出Entry
             ZipEntry zipEntry = entries.nextElement();
             String name = zipEntry.getName();
@@ -112,10 +160,10 @@ public class Face {
             InputStream in = srcFile.getInputStream(zipEntry);
 
             //拼路径 存的路径
-            String desFile = desPath + File.separator + name;
+            String desZipFile = desPath + File.separator + name;
 
             //需要 String str支持中文。str 变成8859  然后用GB2313 编码
-            String strChar = new String(desFile.getBytes("8859_1"), "GB2312");
+            String strChar = new String(desZipFile.getBytes("8859_1"), "GB2312");
             //复制到  目的文件夹
             File file = new File(strChar);
 
@@ -124,17 +172,90 @@ public class Face {
 
     }
 
-    public class EmojiTab {
+    public static class EmojiTab {
         // emoji 表情list
         private List<Emoji> faces;
         private String name;
         private String preview;
+
+        public EmojiTab(List<Emoji> faces, String name) {
+            this.faces = faces;
+            this.name = name;
+        }
+
+        public List<Emoji> getFaces() {
+            return faces;
+        }
+
+        public void setFaces(List<Emoji> faces) {
+            this.faces = faces;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPreview() {
+            return preview;
+        }
+
+        public void setPreview(String preview) {
+            this.preview = preview;
+        }
+
+        public void copyToMap(ArrayMap<String, Emoji> arrayMap) {
+            for (Emoji face : faces) {
+                arrayMap.put(face.key,face);
+            }
+        }
     }
 
-    public class Emoji {
+    public static class Emoji {
+
         private String desc;
         private String key;
-        private String preview;
-        private String source;
+        private Object preview;
+        private Object source;
+
+        public Emoji(String key, Object source) {
+            this.key = key;
+            this.source = source;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public Object getPreview() {
+            return preview;
+        }
+
+        public void setPreview(String preview) {
+            this.preview = preview;
+        }
+
+        public Object getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
     }
 }

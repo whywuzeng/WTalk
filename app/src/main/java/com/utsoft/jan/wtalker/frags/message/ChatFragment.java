@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.utsoft.jan.common.app.Fragment;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
@@ -28,6 +27,7 @@ import com.utsoft.jan.widget.MessageLayout;
 import com.utsoft.jan.widget.PortraitView;
 import com.utsoft.jan.widget.recycler.RecyclerAdapter;
 import com.utsoft.jan.wtalker.R;
+import com.utsoft.jan.wtalker.frags.panel.PanelFragment;
 
 import net.qiujuer.genius.ui.widget.Loading;
 import net.qiujuer.widget.airpanel.AirPanel;
@@ -73,7 +73,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
     private AirPanel.Boss mPanelBoss;
 
-    private Fragment mPanelFragment;
+    private PanelFragment mPanelFragment;
 
     @Override
     protected int getContentLayoutId() {
@@ -93,11 +93,26 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         super.initWidget();
 
 //        mPanelBoss初始化
+        mPanelBoss = mRoot.findViewById(R.id.lay_content);
+        mPanelBoss.setOnStateChangedListener(new AirPanel.OnStateChangedListener() {
+            @Override
+            public void onPanelStateChanged(boolean isOpen) {
 
+            }
+
+            @Override
+            public void onSoftKeyboardStateChanged(boolean isOpen) {
+                if (isOpen)
+                {
+                    appbar.setExpanded(false);
+                }
+            }
+        });
 //        mPanelBoss stateChangeListener
         //面板  和 键盘的改变都可以 监听到，可以影响，appbarlayout的缩放.
 
         //mPanelFragment 初始化
+        mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new Adapter();
@@ -151,6 +166,9 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     public void onImEmojiClicked() {
         //打开底部界面
         //显示 face view
+        mPanelFragment.showEmoji();
+        mPanelBoss.openPanel();
+
     }
 
     @OnClick(R.id.im_record)
