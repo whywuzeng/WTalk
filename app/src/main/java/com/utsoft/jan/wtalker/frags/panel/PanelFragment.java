@@ -1,5 +1,6 @@
 package com.utsoft.jan.wtalker.frags.panel;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -11,11 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.utsoft.jan.common.app.Fragment;
 import com.utsoft.jan.common.tools.UiTool;
 import com.utsoft.jan.face.Face;
+import com.utsoft.jan.widget.recycler.RecyclerAdapter;
 import com.utsoft.jan.wtalker.R;
 
 import net.qiujuer.genius.ui.Ui;
@@ -50,6 +53,11 @@ public class PanelFragment extends Fragment {
     TabLayout tablayout;
     //3种布局，
 
+    private PanelCallback mPanelCallback;
+
+    public void setPanelCallback(PanelCallback mPanelCallback) {
+        this.mPanelCallback = mPanelCallback;
+    }
 
     public PanelFragment() {
         // Required empty public constructor
@@ -101,12 +109,26 @@ public class PanelFragment extends Fragment {
 
         @NonNull
         @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull final ViewGroup container, int position) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.lay_emoji_panel,container,false);
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),this.count));
+            EmojiAdapter adapter = new EmojiAdapter(new RecyclerAdapter.AdapterListenerImpl<Face.Emoji>(){
+                @Override
+                public void onItemClick(RecyclerAdapter.ViewHolder holder, Face.Emoji emoji) {
+                    super.onItemClick(holder, emoji);
+                    //添加表情到输入框
+                    //获得输入框
+                    if (mPanelCallback == null)
+                        return;
+                    EditText editText = mPanelCallback.getInputEditText();
+                    Context context = getContext();
+                    Face.setInputEditTextFace(context,editText,emoji, (int) (editText.getTextSize()+Ui.dipToPx(getResources(),2)));
+                }
+            });
 
-            recyclerView.setAdapter(new EmojiAdapter());
+            adapter.replace(this.lists.get(position).getFaces());
+            recyclerView.setAdapter(adapter);
 
             container.addView(recyclerView);
 
@@ -146,4 +168,7 @@ public class PanelFragment extends Fragment {
     }
 
 
+    public interface PanelCallback{
+        EditText getInputEditText();
+    }
 }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.utsoft.jan.common.app.PresenterFragment;
+import com.utsoft.jan.face.Face;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.persenter.message.ChatContract;
@@ -29,8 +30,10 @@ import com.utsoft.jan.widget.recycler.RecyclerAdapter;
 import com.utsoft.jan.wtalker.R;
 import com.utsoft.jan.wtalker.frags.panel.PanelFragment;
 
+import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.Loading;
 import net.qiujuer.widget.airpanel.AirPanel;
+import net.qiujuer.widget.airpanel.Util;
 
 import java.util.Objects;
 
@@ -46,7 +49,7 @@ import butterknife.OnClick;
  * com.utsoft.jan.wtalker.frags.message
  */
 public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatContract.Presenter>
-        implements ChatContract.View<InitModel>, AppBarLayout.OnOffsetChangedListener {
+        implements ChatContract.View<InitModel>, AppBarLayout.OnOffsetChangedListener,PanelFragment.PanelCallback {
 
     ViewStub viewStubHeader;
     @BindView(R.id.appbar)
@@ -94,10 +97,19 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
 //        mPanelBoss初始化
         mPanelBoss = mRoot.findViewById(R.id.lay_content);
+        mPanelBoss.setup(new AirPanel.PanelListener() {
+            @Override
+            public void requestHideSoftKeyboard() {
+                Util.hideKeyboard(editContent);
+            }
+        });
         mPanelBoss.setOnStateChangedListener(new AirPanel.OnStateChangedListener() {
             @Override
             public void onPanelStateChanged(boolean isOpen) {
-
+                if (isOpen)
+                {
+                    appbar.setExpanded(false);
+                }
             }
 
             @Override
@@ -113,6 +125,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
         //mPanelFragment 初始化
         mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
+        Objects.requireNonNull(mPanelFragment).setPanelCallback(this);
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new Adapter();
@@ -251,6 +264,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         protected void onBind(Message mData) {
             super.onBind(mData);
             SpannableString spannableString = new SpannableString(mData.getContent());
+            //解析code 表情
+            Face.decode(spannableString,txtContent,Ui.dipToPx(getResources(),10));
             txtContent.setText(spannableString);
         }
     }
@@ -267,4 +282,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         }
     }
 
+    @Override
+    public EditText getInputEditText() {
+        return editContent;
+    }
 }

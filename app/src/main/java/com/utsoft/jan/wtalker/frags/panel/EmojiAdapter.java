@@ -15,6 +15,11 @@ import com.utsoft.jan.wtalker.R;
  * com.utsoft.jan.wtalker.frags.panel
  */
 public class EmojiAdapter extends RecyclerAdapter<Face.Emoji> {
+
+    public EmojiAdapter(AdapterListener<Face.Emoji> mAdapterListener) {
+        super(mAdapterListener);
+    }
+
     @Override
     protected int getItemViewType(int position, Face.Emoji emoji) {
 

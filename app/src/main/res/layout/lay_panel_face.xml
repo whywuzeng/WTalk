@@ -2,10 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lay_panel_face"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
@@ -16,26 +17,40 @@
 
     <LinearLayout
         android:id="@+id/lay_bottom"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/len_32">
+        android:layout_height="@dimen/len_32"
+        android:layout_marginTop="1px"
+        android:orientation="horizontal"
+        android:background="@color/white_alpha_224"
+        android:elevation="1dp"
+        android:outlineProvider="bounds"
+        tools:targetApi="LOLLIPOP">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
-            app:tabIndicatorHeight="1dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            app:tabIndicatorHeight="@dimen/len_32"
             app:tabSelectedTextColor="@color/textPrimary"
             app:tabTextColor="@color/textSecond"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent">
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/black_alpha_16"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
         </android.support.design.widget.TabLayout>
 
         <ImageView
-            android:src="@drawable/ic_delete_panel"
-            android:foreground="@drawable/ic_touch_fg"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="@dimen/len_32"
+            android:layout_weight="1"
+            android:padding="@dimen/len_6"
+            android:foreground="@drawable/ic_touch_fg"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:tint="@color/textSecond"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_delete_panel"/>
 
     </LinearLayout>
 

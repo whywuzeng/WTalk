@@ -185,6 +185,18 @@ public abstract class RecyclerAdapter<Data>
         return false;
     }
 
+    public static class AdapterListenerImpl<Data> implements AdapterListener<Data>{
+
+        @Override
+        public void onItemClick(ViewHolder holder, Data data) {
+
+        }
+
+        @Override
+        public void onItemLongClick(ViewHolder holder, Data data) {
+
+        }
+    }
 
     public interface AdapterListener<Data>{
         void onItemClick(RecyclerAdapter.ViewHolder holder,Data data);

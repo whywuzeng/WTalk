@@ -9,6 +9,7 @@
         android:id="@+id/im_face"
         android:foreground="@drawable/ic_touch_fg"
         android:layout_margin="@dimen/len_2"
+        android:padding="8dp"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
         android:layout_width="42dp"

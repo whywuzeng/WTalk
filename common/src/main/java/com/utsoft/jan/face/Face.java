@@ -2,8 +2,18 @@ package com.utsoft.jan.face;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.ArrayMap;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.utsoft.jan.common.app.Application;
@@ -169,6 +179,47 @@ public class Face {
 
             StreamUtil.copy(in,file);
         }
+
+    }
+
+    /**
+     * push表情到editText
+     * @param context
+     * @param editText
+     * @param emoji
+     * @param size
+     */
+    public static void setInputEditTextFace(final Context context, final EditText editText, final Emoji emoji, final int size) {
+        Glide.with(context)
+                .load(emoji.preview)
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>(size,size) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        SpannableString spannableString = new SpannableString(String.format("[%s]", emoji.getKey()));
+                        ImageSpan imageSpan = new ImageSpan(context, resource, ImageSpan.ALIGN_BASELINE);
+                        spannableString
+                                .setSpan(imageSpan,0,spannableString.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        editText.append(spannableString);
+                    }
+                });
+    }
+
+    public static void decode(final SpannableString mData,final TextView txtContent,final float size) {
+
+        if (TextUtils.isEmpty(mData))
+        {
+            return;
+        }
+
+        String dataString = mData.toString();
+        if (TextUtils.isEmpty(dataString))
+        {
+            return;
+        }
+
+        //[ft108][ft107][ft114]
+
 
     }
 
