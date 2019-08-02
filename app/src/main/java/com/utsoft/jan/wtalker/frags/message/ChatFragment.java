@@ -265,8 +265,16 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             super.onBind(mData);
             SpannableString spannableString = new SpannableString(mData.getContent());
             //解析code 表情
-            Face.decode(spannableString,txtContent,Ui.dipToPx(getResources(),10));
-            txtContent.setText(spannableString);
+            SpannableString decode = Face.decode(spannableString, txtContent, Ui.dipToPx(getResources(),20));
+
+            txtContent.setText(decode);
+
+            txtContent.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                }
+            });
         }
     }
 
@@ -279,6 +287,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         }
         else {
             //more 操作
+            mPanelFragment.showGallery();
+            mPanelBoss.openPanel();
         }
     }
 

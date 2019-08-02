@@ -18,9 +18,17 @@ public class ExampleUnitTest {
         //[ft\d]
         //[^ft\d{3}$]
         //\\[.\d{3}\\]
-        String datastr = "fsdf[ft108][ft107][ft114]1111[123]";
-        Pattern compile = Pattern.compile("(\\[\\w{2}\\d{3}\\])");
-        Matcher matcher = compile.matcher(datastr);
+
+        String datastr = "fsdf[ft108][ft107][ft114]1111[12 3]";
+
+        String str = ",./,.dfsdhttp://www.runoob.com/html/html-tutorial.jspdfgdf4564";
+
+        // h\w+:\/\/(w{3}\w+/.\w+):(\d+)[^/s/n].\w+
+
+        //compile("(\\[[^\\[\\]:\\s\\n]+\\])");
+        //"(\\[\\w{2}\\d{3}\\])"
+        Pattern compile = Pattern.compile("h\\w+:\\/\\/(w{3}\\.\\w+\\.\\w+)(:\\d+)?\\/[^\\s\\n]+\\.([html]+|[jsp]+)");
+        Matcher matcher = compile.matcher(str);
         while (matcher.find()){
             String group = matcher.group();
             System.out.println(group);

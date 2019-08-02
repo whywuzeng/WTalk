@@ -3,19 +3,27 @@ package com.utsoft.jan.face;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.ArrayMap;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.utsoft.jan.common.R;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.utils.StreamUtil;
 
@@ -29,6 +37,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -47,7 +57,7 @@ public class Face {
     /**
      * 少于1000个元素 用Android自己的ArrayMap 集合。
      */
-    private static ArrayMap<String,Emoji> arrayMap = new ArrayMap<>();
+    private static ArrayMap<String, Emoji> arrayMap = new ArrayMap<>();
 
     /**
      * 拿到所有的表情面板 和 表情个数
@@ -60,16 +70,14 @@ public class Face {
     private static void init() {
         if (emojiTabs == null) {
             EmojiTab tab = initAssets();
-//            得到ResourceFace资源
+            //            得到ResourceFace资源
             ArrayList<EmojiTab> tabArrayList = new ArrayList<>();
-            if (tab!=null)
-            {
+            if (tab != null) {
                 tabArrayList.add(tab);
             }
 
             EmojiTab face = initResourceFace();
-            if (face!=null)
-            {
+            if (face != null) {
                 tabArrayList.add(face);
             }
 
@@ -112,18 +120,16 @@ public class Face {
         String cacheDir = String.format("%s/face/ft/", context.getFilesDir());
         File fileCacheDir = new File(cacheDir);
         try {
-            if (!fileCacheDir.exists())
-            {
-                if (fileCacheDir.mkdirs())
-                {
+            if (!fileCacheDir.exists()) {
+                if (fileCacheDir.mkdirs()) {
                     InputStream stream = context.getAssets().open(assetsRes);
 
                     //取出的 字节流 要保存到一个地方
                     File tmpSourceFolder = new File(fileCacheDir, "source.zip");
                     //copy
-                    StreamUtil.copy(stream,tmpSourceFolder);
+                    StreamUtil.copy(stream, tmpSourceFolder);
                     //解压到文件夹
-                    UnZipFile(tmpSourceFolder,fileCacheDir);
+                    UnZipFile(tmpSourceFolder, fileCacheDir);
 
                     StreamUtil.delete(tmpSourceFolder.getAbsolutePath());
                 }
@@ -144,7 +150,7 @@ public class Face {
             return null;
         }
 
-        EmojiTab tab = gson.fromJson(jsonReader,EmojiTab.class);
+        EmojiTab tab = gson.fromJson(jsonReader, EmojiTab.class);
 
         for (Emoji face : tab.faces) {
             face.preview = String.format("%s%s%s", cacheDir, File.separator, face.preview);
@@ -161,7 +167,7 @@ public class Face {
         // ZipFile 使用
         ZipFile srcFile = new ZipFile(zipFile);
         //zf.entries
-        for (Enumeration<? extends ZipEntry> entries = srcFile.entries();entries.hasMoreElements();) {
+        for (Enumeration<? extends ZipEntry> entries = srcFile.entries(); entries.hasMoreElements(); ) {
             // ZipEntry 取出Entry
             ZipEntry zipEntry = entries.nextElement();
             String name = zipEntry.getName();
@@ -177,13 +183,14 @@ public class Face {
             //复制到  目的文件夹
             File file = new File(strChar);
 
-            StreamUtil.copy(in,file);
+            StreamUtil.copy(in, file);
         }
 
     }
 
     /**
      * push表情到editText
+     *
      * @param context
      * @param editText
      * @param emoji
@@ -193,34 +200,117 @@ public class Face {
         Glide.with(context)
                 .load(emoji.preview)
                 .asBitmap()
-                .into(new SimpleTarget<Bitmap>(size,size) {
+                .into(new SimpleTarget<Bitmap>(size, size) {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         SpannableString spannableString = new SpannableString(String.format("[%s]", emoji.getKey()));
                         ImageSpan imageSpan = new ImageSpan(context, resource, ImageSpan.ALIGN_BASELINE);
                         spannableString
-                                .setSpan(imageSpan,0,spannableString.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                .setSpan(imageSpan, 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         editText.append(spannableString);
                     }
                 });
     }
 
-    public static void decode(final SpannableString mData,final TextView txtContent,final float size) {
+    public static SpannableString decode(final SpannableString mData, final TextView txtContent, final float size) {
 
-        if (TextUtils.isEmpty(mData))
-        {
-            return;
+        if (TextUtils.isEmpty(mData)) {
+            return mData;
         }
 
         String dataString = mData.toString();
-        if (TextUtils.isEmpty(dataString))
-        {
-            return;
+        if (TextUtils.isEmpty(dataString)) {
+            return mData;
         }
 
         //[ft108][ft107][ft114]
+        // \[[^\[\]:\s\n]\]
+        Pattern compile = Pattern.compile("\\[[^\\[\\]:\\s\\n]+\\]");
+        Matcher matcher = compile.matcher(dataString);
+        while (matcher.find()) {
+            String matchString = matcher.group();
+            // [
+            String key = matchString.replaceAll("\\[", "").replaceAll("\\]", "");
 
+            Emoji emoji = getEmoji(key);
 
+            if (emoji == null)
+                continue;
+
+            int start = matcher.start();
+            int end = matcher.end();
+
+            EmojiSpan emojiSpan = new EmojiSpan(txtContent.getContext(), txtContent, emoji.getPreview(), (int) size);
+
+            mData.setSpan(emojiSpan,start,end,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        return mData;
+    }
+
+    public static Emoji getEmoji(String key) {
+        init();
+        if (TextUtils.isEmpty(key))
+            return null;
+        Emoji emoji = arrayMap.get(key);
+        return emoji;
+    }
+
+    public static class EmojiSpan extends ImageSpan {
+
+        private final int size;
+        private Drawable mDrawable;
+
+        public EmojiSpan(Context context, final View view, Object resource, final int Size) {
+            super(context, R.drawable.default_face, ALIGN_BOTTOM);
+
+            this.size = Size;
+
+            //先得到Drawable 用Glide加载得到
+            Glide.with(context)
+                    .load(resource)
+                    .fitCenter()
+                    .into(new SimpleTarget<GlideDrawable>(size,size) {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            mDrawable = resource.getCurrent();
+                            // 获取自测量高宽  图片的高宽么？
+                            int width = mDrawable.getIntrinsicWidth();
+                            int height = mDrawable.getIntrinsicHeight();
+                            //设置mDrawable 的高宽
+                            mDrawable.setBounds(new Rect(0, 0, width > 0 ? width : Size, height > 0 ? height : Size));
+
+                            //然后 刷新View
+                            view.invalidate();
+
+                        }
+                    });
+
+        }
+
+        @Override
+        public int getSize( Paint paint, CharSequence text, int start, int end,  Paint.FontMetricsInt fm) {
+            Rect rect = mDrawable != null ? mDrawable.getBounds() : new Rect(0, 0, size, size);
+            if (fm != null) {
+                fm.ascent = -rect.bottom;
+                fm.descent = 0;
+
+                fm.top = fm.ascent;
+                fm.bottom = 0;
+            }
+            return rect.right;
+        }
+
+        @Override
+        public Drawable getDrawable() {
+            return mDrawable;
+        }
+
+        @Override
+        public void draw( Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom,  Paint paint) {
+            if (mDrawable!=null)
+            super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+        }
     }
 
     public static class EmojiTab {
@@ -260,7 +350,7 @@ public class Face {
 
         public void copyToMap(ArrayMap<String, Emoji> arrayMap) {
             for (Emoji face : faces) {
-                arrayMap.put(face.key,face);
+                arrayMap.put(face.key, face);
             }
         }
     }

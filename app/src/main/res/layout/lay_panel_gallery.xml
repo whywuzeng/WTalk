@@ -1,16 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     android:id="@+id/lay_panel_gallery"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/gallery_recycler"
-        android:clipToPadding="false"
+    <com.utsoft.jan.widget.GalleryView
+        android:id="@+id/gallery"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"/>
 
-    </android.support.v7.widget.RecyclerView>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="@dimen/len_32">
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_preview"
+            android:layout_gravity="start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:layout_margin="2dp"
+            android:textSize="@dimen/font_12"
+            android:textColor="@color/textPrimary"
+            android:alpha="0.5"
+            android:foreground="@drawable/ic_touch_fg"
+            android:background="@drawable/sel_btn_bg_accent_4_stroke"
+            tools:text="预览"
+            android:layout_width="@dimen/len_64"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/txt_gallery_select_count"
+            android:layout_gravity="center"
+            tools:text="@string/label_gallery_selected_size"
+            android:textColor="@color/textPrimary"
+            android:alpha="0.5"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_gravity="end"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:layout_margin="2dp"
+            android:textSize="@dimen/font_12"
+            android:textColor="@color/white"
+            android:foreground="@drawable/ic_touch_fg"
+            android:background="@drawable/sel_btn_bg_accent_4"
+            tools:text="预览"
+            android:layout_width="@dimen/len_64"
+            android:layout_height="match_parent"/>
+
+
+    </FrameLayout>
+</LinearLayout>
