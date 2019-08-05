@@ -103,6 +103,12 @@ public class MsgCreateModel {
     }
 
     // 同步到卡片的最新状态
+    public void refreshCard(){
+        if (card == null)
+            return;
+        this.attach = card.getAttach();
+        this.content = card.getContent();
+     }
 
     /**
      * 建造者模式，快速的建立一个发送Model

@@ -26,6 +26,8 @@ public class UploadHelper {
 
     private static final String TAG = "UploadHelper";
 
+    public static final String ENDPOINT ="https://exeutest.blob.core.chinacloudapi.cn/zwlbasicscontainer";
+
     public static final String storageConnectionString = "DefaultEndpointsProtocol=https;"
             + "EndpointSuffix=core.chinacloudapi.cn;"
             + "AccountName=exeutest;"
@@ -104,6 +106,17 @@ public class UploadHelper {
         }
 
         return null;
+    }
+
+    public static String uploadMsgPicture(String path){
+        String msgPictureKey = getMsgPictureKey(path);
+        return upload(msgPictureKey,path);
+    }
+
+    private static String getMsgPictureKey(String path) {
+        String md5String = HashUtil.getMD5String(path);
+        String dateString = getDateString();
+        return String.format("msgpicture%s%s.jpg",dateString,md5String);
     }
 
     public static String uploadPortrait(String path){

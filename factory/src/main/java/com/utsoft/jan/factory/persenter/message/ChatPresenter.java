@@ -43,9 +43,22 @@ public class ChatPresenter<View extends ChatContract.View> extends BaseSourcePer
     }
 
     @Override
+    public void pushImage(String... paths) {
+        for (final String path : paths) {
+
+            MsgCreateModel model = new MsgCreateModel.ModelBuild()
+                    .content(path, Message.TYPE_PIC)
+                    .receiver(mReceiverId, mReceiverType)
+                    .Build();
+            MessageHelper.push(model);
+        }
+    }
+
+    @Override
     public void rePush(Message message) {
 
     }
+
 
     /**
      * 数据库数据发生变化

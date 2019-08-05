@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,9 +49,9 @@ public class PanelFragment extends Fragment {
     //    @BindView(R.id.emoji_recycler)
     //    RecyclerView emojiRecycler;
     @BindView(R.id.lay_panel_gallery)
-    ConstraintLayout layPanelGallery;
+    LinearLayout layPanelGallery;
     @BindView(R.id.lay_panel_record)
-    ConstraintLayout layPanelRecord;
+    FrameLayout layPanelRecord;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.lay_panel_face)
@@ -102,7 +102,23 @@ public class PanelFragment extends Fragment {
             }
         });
 
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSendGalleyPicUrl(gallery,gallery.getSelectedPath());
+            }
+        });
 
+    }
+
+    private void onSendGalleyPicUrl(GalleryView view,String[] paths) {
+
+        view.clear();
+
+        PanelCallback callback = mPanelCallback;
+        if (callback == null)
+            return;
+        callback.onSendGallery(paths);
     }
 
     private void initEmoji() {
@@ -201,7 +217,6 @@ public class PanelFragment extends Fragment {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-
             return lists.get(position).getName();
         }
     }
@@ -227,5 +242,7 @@ public class PanelFragment extends Fragment {
 
     public interface PanelCallback {
         EditText getInputEditText();
+
+        void onSendGallery(String[] paths);
     }
 }

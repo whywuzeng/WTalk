@@ -17,5 +17,8 @@ public class Common {
 
         String base_Url = "http://192.168.1.254:8080/wTalker/api/";
 //        String base_Url = "http://192.168.1.107:8080/wTalker/api/";
+
+        //上传图片最大尺寸 860kb
+        long MAX_UPLOAD_IMAGE_LENGHT = 860*1024;
     }
 }

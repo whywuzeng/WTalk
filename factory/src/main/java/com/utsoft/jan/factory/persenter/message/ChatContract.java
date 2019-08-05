@@ -18,6 +18,8 @@ public interface ChatContract {
 
         //重新发送一个消息，返回是否调度成功
         void rePush(Message message);
+
+        void pushImage(String... paths);
     }
 
     interface View<InitModel> extends BaseContract.RecyclerView<Presenter, Message> {

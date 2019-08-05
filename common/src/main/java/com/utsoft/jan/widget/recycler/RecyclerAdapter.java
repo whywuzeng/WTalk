@@ -156,7 +156,12 @@ public abstract class RecyclerAdapter<Data>
     //更新这一条数据
     @Override
     public void update(Data data, ViewHolder holder) {
-
+        int position = holder.getAdapterPosition();
+        if (position >= 0) {
+            mListData.remove(position);
+            mListData.add(position, data);
+            notifyItemChanged(position);
+        }
     }
 
     public void setAdapterListener(AdapterListener<Data> mAdapterListener) {

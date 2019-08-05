@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.face.Face;
 import com.utsoft.jan.factory.model.db.Message;
@@ -188,6 +190,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     public void onImRecordClicked() {
         //打开底部界面
         //显示 Record view
+        mPanelFragment.showRecord();
+        mPanelBoss.openPanel();
     }
 
 
@@ -200,6 +204,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             switch (message.getType()) {
                 case Message.TYPE_STR:
                     return isRight ? R.layout.cell_chat_text_right : R.layout.cell_chat_text_left;
+                case Message.TYPE_PIC:
+                    return isRight ? R.layout.cell_chat_pic_right : R.layout.cell_chat_pic_left;
                 default:
                     return isRight ? R.layout.cell_chat_text_right : R.layout.cell_chat_text_left;
             }
@@ -211,6 +217,9 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
                 case R.layout.cell_chat_text_right:
                 case R.layout.cell_chat_text_left:
                     return new TextHolder(root);
+                case R.layout.cell_chat_pic_left:
+                case R.layout.cell_chat_pic_right:
+                    return new PicHolder(root);
             }
             return new TextHolder(root);
         }
@@ -268,13 +277,6 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             SpannableString decode = Face.decode(spannableString, txtContent, Ui.dipToPx(getResources(),20));
 
             txtContent.setText(decode);
-
-            txtContent.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-
-                }
-            });
         }
     }
 
@@ -295,5 +297,32 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     @Override
     public EditText getInputEditText() {
         return editContent;
+    }
+
+    @Override
+    public void onSendGallery(String[] paths) {
+        mPresenter.pushImage(paths);
+    }
+
+     class PicHolder extends BaseHolder {
+        @BindView(R.id.im_msg_picture)
+        ImageView imMsgPic;
+
+        public PicHolder(View root) {
+            super(root);
+        }
+
+        @Override
+        protected void onBind(Message mData) {
+            super.onBind(mData);
+            String content = mData.getContent();
+
+            Glide.with(getContext())
+                    .load(content)
+                    .asBitmap()
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(imMsgPic);
+        }
     }
 }

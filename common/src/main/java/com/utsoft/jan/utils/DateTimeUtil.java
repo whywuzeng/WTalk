@@ -15,6 +15,8 @@ public class DateTimeUtil {
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yy-MM-dd",Locale.ENGLISH);
 
     public static String getSampleDate(Date date){
+        if (date == null)
+            return "";
         return FORMAT.format(date);
     }
 }
