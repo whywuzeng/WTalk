@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/im_delete"
+        android:visibility="gone"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:padding="6dp"
+        android:background="@drawable/bg_record_delete"
+        android:tint="@color/white_alpha_176"
+        android:src="@drawable/ic_delete_black_24dp"
+        />
+
+    <net.qiujuer.genius.ui.widget.FloatActionButton
+        android:id="@+id/btn_record"
+        android:layout_width="@dimen/len_72"
+        android:layout_height="@dimen/len_72"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/len_40"
+        android:layout_marginBottom="@dimen/len_16"
+        android:padding="@dimen/len_20"
+        android:clickable="true"
+        android:tint="@color/white"
+        app:gBackgroundColor="@color/colorAccent"
+        app:shadowAlpha="128"
+        app:shadowColor="@color/colorAccent"
+        app:shadowRadius="@dimen/len_8"
+        android:src="@drawable/ic_record"
+        />
+
+</merge>

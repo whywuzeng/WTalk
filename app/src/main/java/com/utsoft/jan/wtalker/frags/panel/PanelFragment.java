@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.utsoft.jan.common.app.Fragment;
 import com.utsoft.jan.common.tools.UiTool;
 import com.utsoft.jan.face.Face;
+import com.utsoft.jan.widget.AudioRecordView;
 import com.utsoft.jan.widget.GalleryView;
 import com.utsoft.jan.widget.recycler.RecyclerAdapter;
 import com.utsoft.jan.wtalker.R;
@@ -45,7 +46,7 @@ import butterknife.Unbinder;
  * <p>
  * com.utsoft.jan.wtalker.frags.panel
  */
-public class PanelFragment extends Fragment {
+public class PanelFragment extends Fragment implements AudioRecordView.CallBack {
     //    @BindView(R.id.emoji_recycler)
     //    RecyclerView emojiRecycler;
     @BindView(R.id.lay_panel_gallery)
@@ -69,6 +70,8 @@ public class PanelFragment extends Fragment {
     TextView txtGallerySelectCount;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.audio_record)
+    AudioRecordView audioRecord;
     //3种布局，
 
     private PanelCallback mPanelCallback;
@@ -91,6 +94,11 @@ public class PanelFragment extends Fragment {
         super.initWidget();
         initEmoji();
         initGallery();
+        initAudioRecord();
+    }
+
+    private void initAudioRecord() {
+        audioRecord.setup(this);
     }
 
     private void initGallery() {
@@ -105,13 +113,13 @@ public class PanelFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSendGalleyPicUrl(gallery,gallery.getSelectedPath());
+                onSendGalleyPicUrl(gallery, gallery.getSelectedPath());
             }
         });
 
     }
 
-    private void onSendGalleyPicUrl(GalleryView view,String[] paths) {
+    private void onSendGalleyPicUrl(GalleryView view, String[] paths) {
 
         view.clear();
 
@@ -156,6 +164,18 @@ public class PanelFragment extends Fragment {
         KeyEvent keyEvent = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
 
         callback.getInputEditText().dispatchKeyEvent(keyEvent);
+
+    }
+
+    @Override
+    public void requestRecordStart() {
+        //开始录音乐
+
+    }
+
+    @Override
+    public void requestRecordEnd(int type) {
+        //录音结束，是否发送
 
     }
 
