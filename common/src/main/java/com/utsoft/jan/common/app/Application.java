@@ -114,4 +114,22 @@ public class Application extends android.app.Application {
     private static File getCacheFile() {
         return instance.getCacheDir();
     }
+
+
+    /**
+     * 返回存储audio文件
+     */
+    public static File getAudioTmpFile(){
+        File file = new File(getCacheFile(), "audio");
+        file.mkdirs();
+        File[] files = file.listFiles();
+        if (files!=null&&files.length>0)
+        {
+            for (File file1 : files) {
+                file1.delete();
+            }
+        }
+
+        return new File(file, System.currentTimeMillis() + ".mp3").getAbsoluteFile();
+    }
 }

@@ -4,6 +4,8 @@ import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
 import com.utsoft.jan.factory.presenter.BaseContract;
 
+import java.io.File;
+
 /**
  * Created by Administrator on 2019/7/12.
  * <p>
@@ -20,6 +22,8 @@ public interface ChatContract {
         void rePush(Message message);
 
         void pushImage(String... paths);
+
+        void pushAudio(File file, long time);
     }
 
     interface View<InitModel> extends BaseContract.RecyclerView<Presenter, Message> {

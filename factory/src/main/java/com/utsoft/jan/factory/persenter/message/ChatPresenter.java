@@ -9,6 +9,7 @@ import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.persenter.BaseSourcePersenter;
 import com.utsoft.jan.factory.utils.DiffUIDataCallback;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -52,6 +53,16 @@ public class ChatPresenter<View extends ChatContract.View> extends BaseSourcePer
                     .Build();
             MessageHelper.push(model);
         }
+    }
+
+    @Override
+    public void pushAudio(File file, long time) {
+        MsgCreateModel model = new MsgCreateModel.ModelBuild()
+                .content(file.getAbsolutePath(), Message.TYPE_AUDIO)
+                .attach(String.valueOf(time))
+                .receiver(mReceiverId, mReceiverType)
+                .Build();
+        MessageHelper.push(model);
     }
 
     @Override

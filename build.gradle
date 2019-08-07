@@ -59,4 +59,6 @@ ext{
     airpanelVersion = "1.1.0"
 
     ucropVersion = "2.2.0-native"
+
+    lameVersion = "1.0.0"
 }

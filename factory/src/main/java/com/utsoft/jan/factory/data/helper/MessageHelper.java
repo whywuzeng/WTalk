@@ -72,7 +72,7 @@ public class MessageHelper {
                             content = uploadPicture(model);
                             break;
                         case Message.TYPE_AUDIO:
-
+                            content = uploadAudio(model);
                             break;
                         default:
                             break;
@@ -118,6 +118,14 @@ public class MessageHelper {
                 });
             }
         });
+    }
+
+    private static String uploadAudio(MsgCreateModel model) {
+
+        if (TextUtils.isEmpty(model.getContent()))
+             return null;
+
+        return UploadHelper.uploadAudio(model.getContent());
     }
 
     private static String uploadPicture(MsgCreateModel model) {

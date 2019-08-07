@@ -37,6 +37,7 @@ import net.qiujuer.genius.ui.widget.Loading;
 import net.qiujuer.widget.airpanel.AirPanel;
 import net.qiujuer.widget.airpanel.Util;
 
+import java.io.File;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -206,6 +207,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
                     return isRight ? R.layout.cell_chat_text_right : R.layout.cell_chat_text_left;
                 case Message.TYPE_PIC:
                     return isRight ? R.layout.cell_chat_pic_right : R.layout.cell_chat_pic_left;
+                case Message.TYPE_AUDIO:
+                    return isRight ? R.layout.cell_chat_audio_right : R.layout.cell_chat_audio_left;
                 default:
                     return isRight ? R.layout.cell_chat_text_right : R.layout.cell_chat_text_left;
             }
@@ -220,6 +223,9 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
                 case R.layout.cell_chat_pic_left:
                 case R.layout.cell_chat_pic_right:
                     return new PicHolder(root);
+                case R.layout.cell_chat_audio_left:
+                case R.layout.cell_chat_audio_right:
+                    return new AudioHolder(root);
             }
             return new TextHolder(root);
         }
@@ -304,7 +310,12 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         mPresenter.pushImage(paths);
     }
 
-     class PicHolder extends BaseHolder {
+    @Override
+    public void onSendAudio(File file, long time) {
+        mPresenter.pushAudio(file,time);
+    }
+
+    class PicHolder extends BaseHolder {
         @BindView(R.id.im_msg_picture)
         ImageView imMsgPic;
 
@@ -325,4 +336,31 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
                     .into(imMsgPic);
         }
     }
+
+    class AudioHolder extends BaseHolder{
+        @BindView(R.id.txt_audio)
+        TextView txtAudio;
+
+        public AudioHolder(View root) {
+            super(root);
+        }
+
+        @Override
+        protected void onBind(Message mData) {
+            super.onBind(mData);
+            String content = mData.getContent();
+
+            txtAudio.setText(mData.getAttach());
+
+            //播放音频
+            txtAudio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+    }
+
+
 }

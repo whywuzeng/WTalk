@@ -108,6 +108,19 @@ public class UploadHelper {
         return null;
     }
 
+    public static String uploadAudio(String path)
+    {
+        String uploadKey = getUploadAudioKey(path);
+        return upload(uploadKey,path);
+    }
+
+    private static String getUploadAudioKey(String path) {
+        String md5String = HashUtil.getMD5String(path);
+        String dateString = getDateString();
+        return String.format("audio%s%s.mp3",md5String,dateString);
+    }
+
+
     public static String uploadMsgPicture(String path){
         String msgPictureKey = getMsgPictureKey(path);
         return upload(msgPictureKey,path);

@@ -20,7 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.common.app.Fragment;
+import com.utsoft.jan.common.tools.AudioRecordHelper;
 import com.utsoft.jan.common.tools.UiTool;
 import com.utsoft.jan.face.Face;
 import com.utsoft.jan.widget.AudioRecordView;
@@ -30,6 +32,7 @@ import com.utsoft.jan.wtalker.R;
 
 import net.qiujuer.genius.ui.Ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,6 +78,7 @@ public class PanelFragment extends Fragment implements AudioRecordView.CallBack 
     //3种布局，
 
     private PanelCallback mPanelCallback;
+    private AudioRecordHelper audioRecordHelper;
 
     public void setPanelCallback(PanelCallback mPanelCallback) {
         this.mPanelCallback = mPanelCallback;
@@ -99,6 +103,26 @@ public class PanelFragment extends Fragment implements AudioRecordView.CallBack 
 
     private void initAudioRecord() {
         audioRecord.setup(this);
+        audioRecordHelper = new AudioRecordHelper(Application.getAudioTmpFile(), new AudioRecordHelper.RecordCallback() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onProgress(long time) {
+
+            }
+
+            @Override
+            public void onRecordEnd(File file, long time) {
+                //presenter 上传好。发送消息
+                PanelCallback callback = PanelFragment.this.mPanelCallback;
+                if (callback != null) {
+                    callback.onSendAudio(file, time);
+                }
+            }
+        });
     }
 
     private void initGallery() {
@@ -170,13 +194,18 @@ public class PanelFragment extends Fragment implements AudioRecordView.CallBack 
     @Override
     public void requestRecordStart() {
         //开始录音乐
-
+        audioRecordHelper.recordAsync();
     }
 
     @Override
     public void requestRecordEnd(int type) {
         //录音结束，是否发送
-
+        if (type == AudioRecordView.END_SUCESS) {
+            audioRecordHelper.onStop(false);
+        }
+        else if (type == AudioRecordView.END_CANCEL) {
+            audioRecordHelper.onStop(true);
+        }
     }
 
     class EmojiPager extends PagerAdapter {
@@ -264,5 +293,7 @@ public class PanelFragment extends Fragment implements AudioRecordView.CallBack 
         EditText getInputEditText();
 
         void onSendGallery(String[] paths);
+
+        void onSendAudio(File file,long time);
     }
 }
