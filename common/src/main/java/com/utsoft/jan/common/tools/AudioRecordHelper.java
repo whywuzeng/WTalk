@@ -3,13 +3,11 @@ package com.utsoft.jan.common.tools;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Environment;
 import android.os.SystemClock;
 
 import com.utsoft.jan.common.app.Application;
-
-import net.qiujuer.lame.Lame;
-import net.qiujuer.lame.LameAsyncEncoder;
-import net.qiujuer.lame.LameOutputStream;
+import com.utsoft.jan.utils.PCM2WAVUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -56,11 +54,11 @@ public class AudioRecordHelper {
 
         for (int rate : SAMPLE_RATES) {
 
-            for (int format : new int[]{AudioFormat.ENCODING_PCM_16BIT, AudioFormat.ENCODING_PCM_8BIT}) {
-                for (int channel : new int[]{AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO}) {
+            for (short format : new short[]{AudioFormat.ENCODING_PCM_16BIT, AudioFormat.ENCODING_PCM_8BIT}) {
+                for (short channel : new short[]{AudioFormat.CHANNEL_IN_STEREO, AudioFormat.CHANNEL_IN_MONO}) {
                     int minBufferSize = AudioRecord.getMinBufferSize(rate, channel, format);
                     if (minBufferSize != AudioRecord.ERROR_BAD_VALUE) {
-                        AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, rate, channel, format, minBufferSize);
+                        AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, rate, channel, format, minBufferSize);
                         if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
                             minShortBufferSize = minBufferSize;
                             return audioRecord;
@@ -113,12 +111,15 @@ public class AudioRecordHelper {
         RecordCallback callback = mCallBack;
 
         File file = initTmpFile();
+
+        final File tmpOutFile = createFile(System.currentTimeMillis() + ".wav");
+
         AudioRecord audioRecord = initRecord();
         if (file == null || audioRecord == null) {
             Application.showToast("record or tmpFile is null");
             return null;
         }
-
+        audioRecord.startRecording();
         callback.onStart();
 
         long startTime = SystemClock.uptimeMillis();
@@ -132,17 +133,20 @@ public class AudioRecordHelper {
             e.printStackTrace();
         }
 
-        Lame lame = new Lame(audioRecord.getSampleRate(), audioRecord.getChannelCount(), audioRecord.getSampleRate());
-        //获得lame outputStream
-        LameOutputStream lameOutputStream = new LameOutputStream(lame, outputStream, minShortSize);
-        //获得 lame 异步解码器
-        LameAsyncEncoder lameAsyncEncoder = new LameAsyncEncoder(lameOutputStream, minShortSize);
-        short[] freeBuffer = lameAsyncEncoder.getFreeBuffer();
+        byte[] audioData = new byte[minShortSize];
+
         //while 循环 读取recode。read（）
         while (true) {
-            int read = audioRecord.read(freeBuffer, 0, minShortSize);
-            if (read != AudioRecord.ERROR_INVALID_OPERATION) {
-                lameAsyncEncoder.push(freeBuffer, read);
+            int read = audioRecord.read(audioData, 0, minShortSize);
+            if (read != AudioRecord.ERROR_INVALID_OPERATION ) {
+
+                if (outputStream != null) {
+                    try {
+                        outputStream.write(audioData);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             endTime = SystemClock.uptimeMillis();
@@ -152,20 +156,65 @@ public class AudioRecordHelper {
             }
         }
 
+        if (tmpOutFile!=null)
+            PCM2WAVUtils.pcmToWave(tmpFile.getAbsolutePath(),tmpOutFile.getAbsolutePath(),audioRecord.getSampleRate(),audioRecord.getChannelCount(),minShortSize);
+
         if (!isCancel) {
-            callback.onRecordEnd(file, endTime - startTime);
+            callback.onRecordEnd(tmpOutFile, endTime - startTime);
+        }
+
+        audioRecord.stop();
+        audioRecord.release();
+
+        try {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         //把读到 short[] buffer 放到 解码器里处理
 
         //返回大小 和 time
 
-        return file;
+        return tmpOutFile;
+    }
+
+    private File createFile(String name) {
+        //tmp临时缓存
+        String dirPath = Environment.getExternalStorageDirectory().getPath() + "/AudioRecord/";
+        File file = new File(dirPath);
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        File[] files = file.listFiles();
+        if (files != null && files.length > 0) {
+            for (File file1 : files) {
+                file1.delete();
+            }
+        }
+
+        String filePath = dirPath + name;
+        File objFile = new File(filePath);
+        if (!objFile.exists()) {
+            try {
+                objFile.createNewFile();
+                return objFile;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     public void onStop(boolean cancel) {
         isDone = true;
         isCancel = cancel;
+
     }
 
    public interface RecordCallback {

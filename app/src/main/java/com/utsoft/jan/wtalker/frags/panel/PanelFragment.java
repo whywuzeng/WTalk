@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,6 +117,7 @@ public class PanelFragment extends Fragment implements AudioRecordView.CallBack 
 
             @Override
             public void onRecordEnd(File file, long time) {
+                Log.e("tag", "onRecordEnd: "+"录制结束"+file.getAbsolutePath()+"time:"+time );
                 //presenter 上传好。发送消息
                 PanelCallback callback = PanelFragment.this.mPanelCallback;
                 if (callback != null) {
@@ -202,9 +204,11 @@ public class PanelFragment extends Fragment implements AudioRecordView.CallBack 
         //录音结束，是否发送
         if (type == AudioRecordView.END_SUCESS) {
             audioRecordHelper.onStop(false);
+            Log.e("tag", "requestRecordEnd: "+"录音结束，是否发送"+false);
         }
         else if (type == AudioRecordView.END_CANCEL) {
             audioRecordHelper.onStop(true);
+            Log.e("tag", "requestRecordEnd: "+"录音结束，是否发送"+true);
         }
     }
 

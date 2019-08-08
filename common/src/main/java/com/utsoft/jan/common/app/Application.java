@@ -130,6 +130,6 @@ public class Application extends android.app.Application {
             }
         }
 
-        return new File(file, System.currentTimeMillis() + ".mp3").getAbsoluteFile();
+        return new File(file, System.currentTimeMillis() + ".pcm").getAbsoluteFile();
     }
 }

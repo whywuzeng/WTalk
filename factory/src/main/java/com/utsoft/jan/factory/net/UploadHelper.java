@@ -117,7 +117,7 @@ public class UploadHelper {
     private static String getUploadAudioKey(String path) {
         String md5String = HashUtil.getMD5String(path);
         String dateString = getDateString();
-        return String.format("audio%s%s.mp3",md5String,dateString);
+        return String.format("audio%s%s.wav",md5String,dateString);
     }
 
 

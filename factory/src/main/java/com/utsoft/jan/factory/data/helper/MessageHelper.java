@@ -58,7 +58,7 @@ public class MessageHelper {
                 Factory.getMessageCenter().dispathcher(card);
 
                 //如果是图片 压缩图片并上传.
-                if (message.getType()!=Message.TYPE_STR)
+                if (card.getType()!=Message.TYPE_STR)
                 {
                     //判断content的前缀 不是https auzer
                     if (!model.getContent().startsWith(UploadHelper.ENDPOINT))
@@ -66,7 +66,7 @@ public class MessageHelper {
 
                     String content = null;
 
-                    switch (message.getType())
+                    switch (card.getType())
                     {
                         case Message.TYPE_PIC:
                             content = uploadPicture(model);

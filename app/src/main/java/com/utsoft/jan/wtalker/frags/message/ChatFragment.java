@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
@@ -312,6 +313,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
     @Override
     public void onSendAudio(File file, long time) {
+        Log.e("TAG", "onSendAudio: "+file.getAbsolutePath() );
         mPresenter.pushAudio(file,time);
     }
 
