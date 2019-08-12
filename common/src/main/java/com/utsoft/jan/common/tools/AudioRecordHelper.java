@@ -183,7 +183,7 @@ public class AudioRecordHelper {
 
     private File createFile(String name) {
         //tmp临时缓存
-        String dirPath = Environment.getExternalStorageDirectory().getPath() + "/AudioRecord/";
+        String dirPath = Environment.getExternalStorageDirectory().getPath() + "/AudioRecordTmp/";
         File file = new File(dirPath);
 
         if (!file.exists()) {
@@ -205,10 +205,11 @@ public class AudioRecordHelper {
                 return objFile;
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
 
-        return null;
+        return objFile;
     }
 
     public void onStop(boolean cancel) {

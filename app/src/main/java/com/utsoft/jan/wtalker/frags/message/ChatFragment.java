@@ -21,10 +21,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.common.app.PresenterFragment;
+import com.utsoft.jan.common.tools.RecordPlayHelper;
 import com.utsoft.jan.face.Face;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
+import com.utsoft.jan.factory.net.FileCache;
 import com.utsoft.jan.factory.persenter.message.ChatContract;
 import com.utsoft.jan.factory.persistence.Account;
 import com.utsoft.jan.widget.MessageLayout;
@@ -39,6 +42,7 @@ import net.qiujuer.widget.airpanel.AirPanel;
 import net.qiujuer.widget.airpanel.Util;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -81,6 +85,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     private AirPanel.Boss mPanelBoss;
 
     private PanelFragment mPanelFragment;
+    private FileCache<AudioHolder> mFileCache;
+    private RecordPlayHelper<AudioHolder> mRecordPlayer;
 
     @Override
     protected int getContentLayoutId() {
@@ -178,6 +184,49 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
     protected abstract void initViewStubHeader(ViewStub viewStubHeader);
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mFileCache = new FileCache<>( new FileCache.CacheCallBack<AudioHolder>() {
+            @Override
+            public void successDown(String path, AudioHolder audioHolder) {
+                audioHolder.downSuccess(path);
+            }
+
+            @Override
+            public void failureDown() {
+                Application.showToast("音乐下载失败");
+            }
+        });
+
+        mRecordPlayer = new RecordPlayHelper<>(new RecordPlayHelper.RecordPlayCallBack<AudioHolder>() {
+            @Override
+            public void onPlayError(AudioHolder holder) {
+                Application.showToast("音乐播放出错");
+            }
+
+            @Override
+            public void onPlayComplete(AudioHolder holder) {
+
+            }
+
+            @Override
+            public void onPlayStop(AudioHolder holder) {
+
+            }
+
+            @Override
+            public void onPlayStart(AudioHolder holder) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRecordPlayer.onDestory();
+    }
 
     @OnClick(R.id.im_emoji)
     public void onImEmojiClicked() {
@@ -348,19 +397,35 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         }
 
         @Override
-        protected void onBind(Message mData) {
+        protected void onBind(final Message mData) {
             super.onBind(mData);
-            String content = mData.getContent();
+            final String content = mData.getContent();
 
-            txtAudio.setText(mData.getAttach());
-
+            float time = getTime(mData.getAttach());
+            txtAudio.setText(String.valueOf(time));
             //播放音频
             txtAudio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    mFileCache.getCache(content,AudioHolder.this);
                 }
             });
+        }
+
+        private void downSuccess(String path){
+            Log.e("TAG", "downSuccess: path"+path);
+            //本地链接去播放
+            mRecordPlayer.trigger(AudioHolder.this,path);
+        }
+
+        private void downFailure(){
+
+        }
+
+        private float getTime(String mData) {
+            float second = Long.valueOf(mData) / 1000.0f;
+            BigDecimal decimal = new BigDecimal(second);
+           return decimal.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
         }
     }
 
