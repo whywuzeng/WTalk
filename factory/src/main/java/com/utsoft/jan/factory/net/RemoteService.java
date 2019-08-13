@@ -6,8 +6,11 @@ import com.utsoft.jan.factory.model.api.account.LoginModel;
 import com.utsoft.jan.factory.model.api.account.RegisterModel;
 import com.utsoft.jan.factory.model.api.message.MsgCreateModel;
 import com.utsoft.jan.factory.model.api.user.UserUpdateModel;
+import com.utsoft.jan.factory.model.card.FriendCircleCard;
 import com.utsoft.jan.factory.model.card.MessageCard;
 import com.utsoft.jan.factory.model.card.UserCard;
+import com.utsoft.jan.factory.persenter.friend.CommentModel;
+import com.utsoft.jan.factory.persenter.friend.ReleaseFriendCircleModel;
 
 import java.util.List;
 
@@ -57,4 +60,21 @@ public interface RemoteService {
     // 发送消息的接口
     @POST("msg")
     Call<RspModel<MessageCard>> msgPush(@Body MsgCreateModel model);
+
+    //获取朋友圈的列表信息
+    @GET("friend/list")
+    Call<RspModel<List<FriendCircleCard>>> friendCircle();
+
+    //发布朋友圈
+    @POST("friend")
+    Call<RspModel<FriendCircleCard>> release(@Body ReleaseFriendCircleModel model);
+
+    //点赞
+    @POST("friend/fabulous/{friendCircleId}")
+    Call<RspModel> fabulous(@Path(value = "friendCircleId") String friendCircleId);
+
+    //评论
+    @POST("friend/comment")
+    Call<RspModel> comment(@Body CommentModel model);
+
 }

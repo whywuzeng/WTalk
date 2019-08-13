@@ -62,4 +62,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
+    implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
 }

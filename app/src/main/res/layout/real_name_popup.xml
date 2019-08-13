@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/txt_photograph"
+        android:src="@drawable/ic_add"
+        android:layout_width="@dimen/len_100"
+        android:layout_height="@dimen/len_100"/>
+
+    <ImageView
+        android:id="@+id/txt_album"
+        android:src="@drawable/ic_add"
+        android:layout_width="@dimen/len_100"
+        android:layout_height="@dimen/len_100"/>
+
+    <TextView
+        android:id="@+id/txt_cancel"
+        android:text="取消"
+        android:gravity="center"
+        android:textColor="@color/black_alpha_192"
+        android:layout_width="@dimen/len_100"
+        android:layout_height="@dimen/len_100"/>
+
+</LinearLayout>

@@ -32,5 +32,11 @@
     <string name="label_gallery_select_max_size">至多选择%s张</string>
     <string name="label_gallery_selected_size">已选%s张</string>
     <string name="label_chat_edit_hint">Type something to send...</string>
-
+    <string name="label_big_picture">大图</string>
+    <string name="label_thoughts_moment">思恋时刻</string>
+    <string name="label_pic_intent_key">label_pic_intent_key</string>
+    <string name="label_release">发布</string>
+    <string name="label_comment_success">评论成功</string>
+    <string name="label_add">增加</string>
+    <string name="label_release_success">发布成功</string>
 </resources>

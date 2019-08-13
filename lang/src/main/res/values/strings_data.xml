@@ -25,4 +25,8 @@
     <string name="data_rsp_error_account_login">登录失败，是那里没搞定么? §^_^§</string>
     <string name="data_rsp_error_account_register">抱歉，注册失败!  ^_^|||</string>
     <string name="data_rsp_error_account_no_permission">您越权啦!!!</string>
+    <string name="data_rsp_error_release_content_null">内容不能为空</string>
+    <string name="data_rsp_error_release_image_null">发布图片不能为空</string>
+    <string name="data_upload_error">上传失败</string>
+    <string name="hint_comment_info">评论信息提示</string>
 </resources>

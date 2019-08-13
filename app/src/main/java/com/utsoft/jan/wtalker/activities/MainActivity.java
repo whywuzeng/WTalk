@@ -106,6 +106,7 @@ public class MainActivity extends Activity implements NavHelper.TabChangeListene
     @OnClick(R.id.im_portrait)
     public void onClick() {
         //跳转到个人界面
+        FriendCircleActivity.show(this);
     }
 
     //切换回调

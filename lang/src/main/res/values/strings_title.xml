@@ -5,4 +5,8 @@
     <string name="title_search">搜索</string>
 
     <string name="title_select_pic">选择图片</string>
+
+    <string name="title_friend_circle">朋友圈</string>
+
+    <string name="title_friend_circle_release">发布</string>
 </resources>

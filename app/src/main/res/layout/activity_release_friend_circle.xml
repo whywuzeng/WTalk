@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.ReleaseFriendCircleActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarWithStatusBarSize"
+        android:background="@color/colorPrimary"
+        android:paddingTop="@dimen/statusBarSize"
+        android:orientation="horizontal">
+
+
+        <net.qiujuer.genius.ui.widget.TextView
+            android:id="@+id/txt_release"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/len_10"
+            android:background="@color/green_300"
+            android:layout_gravity="right"
+            android:paddingBottom="5dp"
+            android:paddingEnd="@dimen/len_16"
+            android:paddingStart="@dimen/len_16"
+            android:paddingTop="5dp"
+            android:text="@string/label_release" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/len_10">
+        <EditText
+            android:id="@+id/edit_moment"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/len_80"
+            android:hint="@string/label_thoughts_moment"
+            android:gravity="start"
+            android:textColorHint="@color/black_alpha_64"
+            android:textColor="@color/black_alpha_64"
+            android:background="@color/white"
+            android:textSize="@dimen/font_14"
+            />
+        <!--android:background="@drawable/bg_main_recycler"-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/len_12"
+            android:paddingTop="@dimen/len_12"
+            android:elevation="1dp"
+            android:outlineProvider="bounds"
+            tools:targetApi="lollipop"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -93,6 +93,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".activities.FriendCircleActivity"
+            android:label="@string/title_friend_circle"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar" />
+
+        <activity
+            android:name=".activities.ReleaseFriendCircleActivity"
+            android:label="@string/title_friend_circle_release"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar" />
     </application>
 
 </manifest>

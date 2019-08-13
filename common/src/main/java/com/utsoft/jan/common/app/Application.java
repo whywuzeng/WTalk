@@ -25,6 +25,7 @@ public class Application extends android.app.Application {
 
     private static List<Activity> activityList = new ArrayList<>();
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -131,5 +132,9 @@ public class Application extends android.app.Application {
         }
 
         return new File(file, System.currentTimeMillis() + ".pcm").getAbsoluteFile();
+    }
+
+    public static String getPhotoFileName() {
+        return "takephoto";
     }
 }
