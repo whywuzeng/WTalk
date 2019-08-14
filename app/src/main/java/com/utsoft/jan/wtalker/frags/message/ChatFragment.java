@@ -331,7 +331,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             SpannableString spannableString = new SpannableString(mData.getContent());
             //解析code 表情
             SpannableString decode = Face.decode(spannableString, txtContent, Ui.dipToPx(getResources(),20));
-
+            //TextDrawableCallback.setText(txtContent,decode,TextView.BufferType.SPANNABLE);
             txtContent.setText(decode);
         }
     }

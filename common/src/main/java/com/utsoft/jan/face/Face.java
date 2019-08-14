@@ -18,13 +18,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.utsoft.jan.common.R;
 import com.utsoft.jan.common.app.Application;
+import com.utsoft.jan.common.tools.gif.DrawableTarget;
+import com.utsoft.jan.common.tools.gif.GlidePreDrawable;
 import com.utsoft.jan.utils.StreamUtil;
 
 import java.io.File;
@@ -267,24 +268,34 @@ public class Face {
             this.size = Size;
 
             //先得到Drawable 用Glide加载得到
+            //Glide.with(context)
+            //        .load(resource)
+            //        .fitCenter()
+            //        .into(new SimpleTarget<GlideDrawable>(size,size) {
+            //            @Override
+            //            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+            //                mDrawable = resource.getCurrent();
+            //                // 获取自测量高宽  图片的高宽么？
+            //                int width = mDrawable.getIntrinsicWidth();
+            //                int height = mDrawable.getIntrinsicHeight();
+            //                //设置mDrawable 的高宽
+            //                mDrawable.setBounds(new Rect(0, 0, width > 0 ? width : Size, height > 0 ? height : Size));
+            //
+            //                //然后 刷新View
+            //                view.invalidate();
+            //
+            //            }
+            //        });
+
+            GlidePreDrawable glidePreDrawable = new GlidePreDrawable(view);
+            //new DrawableTarget(glidePreDrawable)
+
             Glide.with(context)
                     .load(resource)
-                    .fitCenter()
-                    .into(new SimpleTarget<GlideDrawable>(size,size) {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            mDrawable = resource.getCurrent();
-                            // 获取自测量高宽  图片的高宽么？
-                            int width = mDrawable.getIntrinsicWidth();
-                            int height = mDrawable.getIntrinsicHeight();
-                            //设置mDrawable 的高宽
-                            mDrawable.setBounds(new Rect(0, 0, width > 0 ? width : Size, height > 0 ? height : Size));
-
-                            //然后 刷新View
-                            view.invalidate();
-
-                        }
-                    });
+                    .asGif()
+                    .placeholder(glidePreDrawable)
+                    .into(new DrawableTarget(glidePreDrawable,Size));
+            mDrawable = glidePreDrawable;
 
         }
 
