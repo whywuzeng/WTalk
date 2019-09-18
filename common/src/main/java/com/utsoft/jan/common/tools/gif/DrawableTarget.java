@@ -45,6 +45,8 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
     @Override
     public void onLoadCleared(@Nullable Drawable placeholder) {
         Log.i(TAG, "onLoadCleared: " + placeholder);
+        if (placeholder==null)
+            return;
         if (preDrawable.getDrawable() != null) {
             return;
         }
@@ -60,7 +62,10 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
     @Override
     public void onLoadStarted(@Nullable Drawable placeholder) {
         Log.i(TAG, "onLoadCleared: " + placeholder);
+        if (placeholder==null)
+            return;
         preDrawable.setDrawable(placeholder);
+
         if (placeholder instanceof GifDrawable) {
             ((GifDrawable) placeholder).setLoopCount(GifDrawable.LOOP_FOREVER);
             ((GifDrawable) placeholder).start();
@@ -71,6 +76,8 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
     @Override
     public void onLoadFailed(Exception e,@Nullable Drawable errorDrawable) {
         Log.i(TAG, "onLoadFailed: " + errorDrawable);
+        if (errorDrawable==null)
+            return;
         preDrawable.setDrawable(errorDrawable);
         if (errorDrawable instanceof GifDrawable) {
             ((GifDrawable) errorDrawable).setLoopCount(GifDrawable.LOOP_FOREVER);

@@ -5,8 +5,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -26,6 +27,7 @@ import com.utsoft.jan.common.R;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.common.tools.gif.DrawableTarget;
 import com.utsoft.jan.common.tools.gif.GlidePreDrawable;
+import com.utsoft.jan.common.tools.gif.IsoheightImageSpan;
 import com.utsoft.jan.utils.StreamUtil;
 
 import java.io.File;
@@ -241,7 +243,7 @@ public class Face {
             int start = matcher.start();
             int end = matcher.end();
 
-            EmojiSpan emojiSpan = new EmojiSpan(txtContent.getContext(), txtContent, emoji.getPreview(), (int) size);
+            EmojiSpan emojiSpan = new EmojiSpan(txtContent.getContext(), txtContent, emoji.getSource(), (int) size);
 
             mData.setSpan(emojiSpan,start,end,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -257,9 +259,57 @@ public class Face {
         return emoji;
     }
 
-    public static class EmojiSpan extends ImageSpan {
+    public static class EmojiSpan extends IsoheightImageSpan {
 
-        private final int size;
+        public EmojiSpan(Drawable d) {
+            super(d);
+        }
+
+        public EmojiSpan(@NonNull Drawable d, int verticalAlignment) {
+            super(d, verticalAlignment);
+        }
+
+        public EmojiSpan(@NonNull Drawable d, @NonNull String source) {
+            super(d, source);
+        }
+
+        public EmojiSpan(@NonNull Drawable d, @NonNull String source, int verticalAlignment) {
+            super(d, source, verticalAlignment);
+        }
+
+        public EmojiSpan(Context context, Uri uri) {
+            super(context, uri);
+        }
+
+        public EmojiSpan(@NonNull Context context, @NonNull Uri uri, int verticalAlignment) {
+            super(context, uri, verticalAlignment);
+        }
+
+        public EmojiSpan(@NonNull Context context, int resourceId) {
+            super(context, resourceId);
+        }
+
+        public EmojiSpan(@NonNull Context context, int resourceId, int verticalAlignment) {
+            super(context, resourceId, verticalAlignment);
+        }
+
+        public EmojiSpan(@NonNull Bitmap b) {
+            super(b);
+        }
+
+        public EmojiSpan(@NonNull Bitmap b, int verticalAlignment) {
+            super(b, verticalAlignment);
+        }
+
+        public EmojiSpan(@NonNull Context context, @NonNull Bitmap b) {
+            super(context, b);
+        }
+
+        public EmojiSpan(@NonNull Context context, @NonNull Bitmap b, int verticalAlignment) {
+            super(context, b, verticalAlignment);
+        }
+
+        private  int size;
         private Drawable mDrawable;
 
         public EmojiSpan(Context context, final View view, Object resource, final int Size) {
@@ -287,30 +337,32 @@ public class Face {
             //            }
             //        });
 
-            GlidePreDrawable glidePreDrawable = new GlidePreDrawable(view);
+
+            GlidePreDrawable glidePreDrawable1 = new GlidePreDrawable(view);
             //new DrawableTarget(glidePreDrawable)
 
             Glide.with(context)
                     .load(resource)
                     .asGif()
-                    .placeholder(glidePreDrawable)
-                    .into(new DrawableTarget(glidePreDrawable,Size));
-            mDrawable = glidePreDrawable;
+                    .dontAnimate()
+                    .into(new DrawableTarget(glidePreDrawable1,Size));
+            mDrawable = glidePreDrawable1;
 
         }
 
-        @Override
-        public int getSize( Paint paint, CharSequence text, int start, int end,  Paint.FontMetricsInt fm) {
-            Rect rect = mDrawable != null ? mDrawable.getBounds() : new Rect(0, 0, size, size);
-            if (fm != null) {
-                fm.ascent = -rect.bottom;
-                fm.descent = 0;
-
-                fm.top = fm.ascent;
-                fm.bottom = 0;
-            }
-            return rect.right;
-        }
+        //@Override
+        //public int getSize( Paint paint, CharSequence text, int start, int end,  Paint.FontMetricsInt fm) {
+        //    Rect rect = mDrawable != null ? mDrawable.getBounds() : new Rect(0, 0, size, size);
+        //    if (fm != null) {
+        //        fm.ascent = -rect.bottom;
+        //        fm.descent = 0;
+        //
+        //        fm.top = fm.ascent;
+        //        fm.bottom = 0;
+        //    }
+        //
+        //    return rect.right;
+        //}
 
         @Override
         public Drawable getDrawable() {

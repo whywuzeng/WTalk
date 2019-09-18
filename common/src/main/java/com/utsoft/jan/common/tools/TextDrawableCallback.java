@@ -2,7 +2,6 @@ package com.utsoft.jan.common.tools;
 
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
-import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
 
@@ -41,13 +40,13 @@ public class TextDrawableCallback {
                     drawable.setCallback(callback);
                 }
             }
-            GifSpanWatcher gifSpanWatcher = new GifSpanWatcher();
-            //gifSpanWatcher是SpanWatcher,继承自NoCopySpan
-            //只有setText之后设置SpanWatcher才能成功
-            ((Spannable) text).setSpan(gifSpanWatcher, 0, text.length(),
-                    Spanned.SPAN_INCLUSIVE_INCLUSIVE | Spanned.SPAN_PRIORITY);
+            //GifSpanWatcher gifSpanWatcher = new GifSpanWatcher();
+            ////gifSpanWatcher是SpanWatcher,继承自NoCopySpan
+            ////只有setText之后设置SpanWatcher才能成功
+            //((Spannable) text).setSpan(gifSpanWatcher, 0, text.length(),
+            //        Spanned.SPAN_INCLUSIVE_INCLUSIVE | Spanned.SPAN_PRIORITY);
 
         }
-        textView.invalidate();
+        //textView.invalidate();
     }
 }

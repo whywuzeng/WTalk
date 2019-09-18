@@ -24,6 +24,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.common.tools.RecordPlayHelper;
+import com.utsoft.jan.common.tools.TextDrawableCallback;
+import com.utsoft.jan.common.tools.gif.OneSpanTextview;
 import com.utsoft.jan.face.Face;
 import com.utsoft.jan.factory.model.db.Message;
 import com.utsoft.jan.factory.model.db.User;
@@ -138,6 +140,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         Objects.requireNonNull(mPanelFragment).setPanelCallback(this);
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler.getItemAnimator().setChangeDuration(0);
         mAdapter = new Adapter();
         recycler.setAdapter(mAdapter);
         initEidtContent();
@@ -319,7 +322,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     class TextHolder extends BaseHolder {
 
         @BindView(R.id.txt_content)
-        TextView txtContent;
+        OneSpanTextview txtContent;
 
         public TextHolder(@NonNull View itemView) {
             super(itemView);
@@ -331,8 +334,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             SpannableString spannableString = new SpannableString(mData.getContent());
             //解析code 表情
             SpannableString decode = Face.decode(spannableString, txtContent, Ui.dipToPx(getResources(),20));
-            //TextDrawableCallback.setText(txtContent,decode,TextView.BufferType.SPANNABLE);
-            txtContent.setText(decode);
+            TextDrawableCallback.setText(txtContent,decode,TextView.BufferType.SPANNABLE);
+            //txtContent.setText(decode);
         }
     }
 

@@ -19,7 +19,7 @@
         android:layout_marginStart="@dimen/len_20"
         >
 
-        <TextView
+        <com.utsoft.jan.common.tools.gif.OneSpanTextview
             android:id="@+id/txt_content"
             android:minHeight="@dimen/len_24"
             android:gravity="center"

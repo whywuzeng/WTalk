@@ -8,4 +8,6 @@
     <item name="tag_recycler_holder" type="id"/>
 
     <item name="drawable_callback_tag" type="id"/>
+
+    <item name="span_watcher_tag" type="id"/>
 </resources>

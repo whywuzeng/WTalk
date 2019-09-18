@@ -58,4 +58,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     api project(':lang')
     api project(':emoji_res')
+
+    implementation 'org.aspectj:aspectjrt:1.8.9'
 }

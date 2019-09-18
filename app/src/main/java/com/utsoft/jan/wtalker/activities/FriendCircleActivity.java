@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.utsoft.jan.clickevent.SingleClick;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.common.app.PresenterToolbarActivity;
 import com.utsoft.jan.factory.model.card.FriendCircleCard;
@@ -239,6 +240,7 @@ public class FriendCircleActivity extends PresenterToolbarActivity<FriendCircleC
                     CollectionUtil.toArrayList(imgs)
                     , new RecyclerAdapter.AdapterListenerImpl() {
                 @Override
+                @SingleClick(valueId = R.id.im_portrait)
                 public void onItemClick(RecyclerAdapter.ViewHolder holder, Object o) {
                     Application.showToast("点击了");
                 }

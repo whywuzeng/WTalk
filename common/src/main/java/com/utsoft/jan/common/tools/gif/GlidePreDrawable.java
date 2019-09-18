@@ -21,8 +21,7 @@ public class GlidePreDrawable extends Drawable implements Drawable.Callback, Mea
     private final View mView;
     private Drawable mDrawable;
     private boolean needResize;
-    private long lastInvalidateTime;
-    private long lastInvalidateTime1;
+
 
     public GlidePreDrawable(View view) {
         this.mView = view;
@@ -30,12 +29,9 @@ public class GlidePreDrawable extends Drawable implements Drawable.Callback, Mea
 
     @Override
     public void draw(Canvas canvas) {
-        if (System.currentTimeMillis() - lastInvalidateTime > 100) {
-            lastInvalidateTime1 = System.currentTimeMillis();
             if (mDrawable != null) {
                 mDrawable.draw(canvas);
             }
-        }
     }
 
     @Override
@@ -80,13 +76,10 @@ public class GlidePreDrawable extends Drawable implements Drawable.Callback, Mea
 
     @Override
     public void invalidateDrawable(Drawable who) {
-        if (System.currentTimeMillis() - lastInvalidateTime > 100) {
-            lastInvalidateTime = System.currentTimeMillis();
             if (getCallback() != null) {
-                //getCallback().invalidateDrawable(this);
-                mView.invalidate();
+                getCallback().invalidateDrawable(this);
             }
-        }
+        //mView.invalidate();
     }
 
     @Override
