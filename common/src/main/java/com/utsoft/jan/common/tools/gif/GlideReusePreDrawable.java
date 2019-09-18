@@ -2,7 +2,6 @@ package com.utsoft.jan.common.tools.gif;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.view.View;
 
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -20,8 +19,7 @@ public class GlideReusePreDrawable extends GlidePreDrawable implements Invalidat
     private WeakHashMap<Drawable.Callback, Integer> callbackWeakHashMap;
     private CallBack callBack = new CallBack();
 
-    public GlideReusePreDrawable(View view) {
-        super(view);
+    public GlideReusePreDrawable() {
     }
 
     @Override

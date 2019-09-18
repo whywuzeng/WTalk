@@ -338,7 +338,7 @@ public class Face {
             //        });
 
 
-            GlidePreDrawable glidePreDrawable1 = new GlidePreDrawable(view);
+            GlidePreDrawable glidePreDrawable1 = new GlidePreDrawable();
             //new DrawableTarget(glidePreDrawable)
 
             Glide.with(context)

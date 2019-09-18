@@ -6,7 +6,6 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.view.View;
 
 /**
  * Created by Administrator on 2019/8/14.
@@ -18,13 +17,13 @@ import android.view.View;
 public class GlidePreDrawable extends Drawable implements Drawable.Callback, Measurable {
 
     private static final String TAG = "PreDrawable";
-    private final View mView;
     private Drawable mDrawable;
     private boolean needResize;
+    private String mTagLog;
 
 
-    public GlidePreDrawable(View view) {
-        this.mView = view;
+    public GlidePreDrawable() {
+        this.mTagLog = System.currentTimeMillis()+"";
     }
 
     @Override
@@ -79,7 +78,6 @@ public class GlidePreDrawable extends Drawable implements Drawable.Callback, Mea
             if (getCallback() != null) {
                 getCallback().invalidateDrawable(this);
             }
-        //mView.invalidate();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
     private static final String TAG = "GifTarget";
     private final int Size;
     private GlidePreDrawable preDrawable;
-
+    //加载结束时调用
     @Override
     public void onResourceReady(@NonNull GifDrawable resource,
                                 @Nullable GlideAnimation<? super GifDrawable> transition) {
@@ -41,7 +41,7 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
         this.Size = size;
     }
 
-
+    //加载任务取消并且资源被释放时调用
     @Override
     public void onLoadCleared(@Nullable Drawable placeholder) {
         Log.i(TAG, "onLoadCleared: " + placeholder);
@@ -58,7 +58,7 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
         preDrawable.invalidateSelf();
 
     }
-
+    //加载开始时调用
     @Override
     public void onLoadStarted(@Nullable Drawable placeholder) {
         Log.i(TAG, "onLoadCleared: " + placeholder);
@@ -72,7 +72,7 @@ public class DrawableTarget extends SimpleTarget<GifDrawable> {
         }
         preDrawable.invalidateSelf();
     }
-
+    //加载失败是调用
     @Override
     public void onLoadFailed(Exception e,@Nullable Drawable errorDrawable) {
         Log.i(TAG, "onLoadFailed: " + errorDrawable);
