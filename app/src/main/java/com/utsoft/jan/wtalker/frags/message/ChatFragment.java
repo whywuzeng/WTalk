@@ -272,7 +272,9 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             switch (viewtype) {
                 case R.layout.cell_chat_text_right:
                 case R.layout.cell_chat_text_left:
-                    return new TextHolder(root);
+                    final TextHolder textHolder = new TextHolder(root);
+                    textHolder.setIsRecyclable(false);
+                    return textHolder;
                 case R.layout.cell_chat_pic_left:
                 case R.layout.cell_chat_pic_right:
                     return new PicHolder(root);

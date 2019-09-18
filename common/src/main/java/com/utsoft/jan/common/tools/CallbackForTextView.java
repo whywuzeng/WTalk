@@ -27,7 +27,7 @@ public class CallbackForTextView implements Drawable.Callback {
         {
             return;
         }
-        if (System.currentTimeMillis() - lastInvalidateTime > 40) {
+        if (System.currentTimeMillis() - lastInvalidateTime > 400) {
             lastInvalidateTime = System.currentTimeMillis();
             mTextView.invalidate();
         }
