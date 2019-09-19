@@ -33,11 +33,11 @@ public class OneSpanTextview extends android.support.v7.widget.AppCompatTextView
 
     {
         List<NoCopySpan> watchers = new ArrayList<>();
-        watchers.add(new GifSpanWatcher());
+        watchers.add(new GifSpanWatcher(this));
         setSpannableFactory(new SpXSpannableFactory(watchers));
     }
 
-    public void setText(CharSequence text, BufferType type) {
-        super.setText(text, BufferType.SPANNABLE);
+    public void setText(CharSequence text, TextView.BufferType type) {
+        super.setText(text, TextView.BufferType.SPANNABLE);
     }
 }

@@ -1,11 +1,24 @@
 package com.utsoft.jan.common.tools.gif;
 
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
+import android.content.ContentResolver;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import android.net.Uri;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifOptions;
+import pl.droidsonroids.gif.InputSource;
 
 /**
  * Created by Administrator on 2019/8/14.
@@ -14,129 +27,91 @@ import android.support.annotation.NonNull;
  * <p>
  * com.utsoft.jan.common.tools.gif
  */
-public class GlidePreDrawable extends Drawable implements Drawable.Callback, Measurable {
+public class GlidePreDrawable extends GifDrawable implements InvalidateDrawable2 {
 
     private static final String TAG = "PreDrawable";
-    private Drawable mDrawable;
-    private boolean needResize;
-    private String mTagLog;
+    private CallBack mCallBack = new CallBack();
+
+    private List<RefreshListener> mRefreshListeners = new ArrayList<>();
 
 
-    public GlidePreDrawable() {
-        this.mTagLog = System.currentTimeMillis()+"";
+    {
+        setCallback(mCallBack);
+    }
+
+    public GlidePreDrawable(Resources res, int id) throws Resources.NotFoundException, IOException {
+        super(res, id);
+    }
+
+    public GlidePreDrawable(AssetManager assets, String assetName) throws IOException {
+        super(assets, assetName);
+    }
+
+    public GlidePreDrawable(String filePath) throws IOException {
+        super(filePath);
+    }
+
+    public GlidePreDrawable(File file) throws IOException {
+        super(file);
+    }
+
+    public GlidePreDrawable(InputStream stream) throws IOException {
+        super(stream);
+    }
+
+    public GlidePreDrawable(AssetFileDescriptor afd) throws IOException {
+        super(afd);
+    }
+
+    public GlidePreDrawable(FileDescriptor fd) throws IOException {
+        super(fd);
+    }
+
+    public GlidePreDrawable(byte[] bytes) throws IOException {
+        super(bytes);
+    }
+
+    public GlidePreDrawable(ByteBuffer buffer) throws IOException {
+        super(buffer);
+    }
+
+    public GlidePreDrawable(ContentResolver resolver, Uri uri) throws IOException {
+        super(resolver, uri);
+    }
+
+    protected GlidePreDrawable(InputSource inputSource, GifDrawable oldDrawable, ScheduledThreadPoolExecutor executor, boolean isRenderingTriggeredOnDraw, GifOptions options) throws IOException {
+        super(inputSource, oldDrawable, executor, isRenderingTriggeredOnDraw, options);
+    }
+
+
+    @Override
+    public void addRefreshListener(RefreshListener listener) {
+        mRefreshListeners.add(listener);
     }
 
     @Override
-    public void draw(Canvas canvas) {
-            if (mDrawable != null) {
-                mDrawable.draw(canvas);
+    public void removeRefreshListener(RefreshListener listener) {
+        mRefreshListeners.remove(listener);
+    }
+
+    class CallBack implements Drawable.Callback{
+
+
+        @Override
+        public void invalidateDrawable( Drawable who) {
+            for (RefreshListener listener : mRefreshListeners) {
+                listener.onRefresh();
             }
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-        if (mDrawable != null) {
-            mDrawable.setAlpha(alpha);
         }
-    }
 
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        if (mDrawable != null) {
-            mDrawable.setColorFilter(cf);
+        @Override
+        public void scheduleDrawable( Drawable who,  Runnable what, long when) {
+
         }
-    }
 
-    @Override
-    public int getOpacity() {
-        if (mDrawable != null) {
-            return mDrawable.getOpacity();
+        @Override
+        public void unscheduleDrawable( Drawable who,  Runnable what) {
+
         }
-        return PixelFormat.UNKNOWN;
-    }
-
-    public void setDrawable(Drawable drawable) {
-        if (this.mDrawable != null) {
-            this.mDrawable.setCallback(null);
-        }
-        drawable.setCallback(this);
-        this.mDrawable = drawable;
-        needResize = true;
-        if (getCallback() != null) {
-            getCallback().invalidateDrawable(this);
-        }
-    }
-
-    @Override
-    protected void onBoundsChange(Rect bounds) {
-        super.onBoundsChange(bounds);
-        needResize = false;
-    }
-
-    @Override
-    public void invalidateDrawable(Drawable who) {
-            if (getCallback() != null) {
-                getCallback().invalidateDrawable(this);
-            }
-    }
-
-    @Override
-    public void scheduleDrawable(Drawable who, Runnable what, long when) {
-        if (getCallback() != null) {
-            getCallback().scheduleDrawable(who, what, when);
-        }
-    }
-
-    @Override
-    public void unscheduleDrawable(Drawable who, Runnable what) {
-        if (getCallback() != null) {
-            getCallback().unscheduleDrawable(who, what);
-        }
-    }
-
-    @Override
-    public void setBounds(@NonNull Rect bounds) {
-        super.setBounds(bounds);
-        if (mDrawable != null) {
-            mDrawable.setBounds(bounds);
-        }
-    }
-
-    @Override
-    public void setBounds(int left, int top, int right, int bottom) {
-        super.setBounds(left, top, right, bottom);
-        if (mDrawable != null) {
-            mDrawable.setBounds(left, top, right, bottom);
-        }
-    }
-
-    @Override
-    public int getWidth() {
-        if (mDrawable != null) {
-            return mDrawable.getIntrinsicWidth();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getHeight() {
-        if (mDrawable != null) {
-            return mDrawable.getIntrinsicHeight();
-        }
-        return 0;
-    }
-
-    @Override
-    public boolean canMeasure() {
-        return mDrawable != null;
-    }
-
-    @Override
-    public boolean needResize() {
-        return mDrawable != null && needResize;
-    }
-
-    public Drawable getDrawable() {
-        return mDrawable;
     }
 }

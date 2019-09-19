@@ -24,7 +24,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.utsoft.jan.common.app.Application;
 import com.utsoft.jan.common.app.PresenterFragment;
 import com.utsoft.jan.common.tools.RecordPlayHelper;
-import com.utsoft.jan.common.tools.TextDrawableCallback;
 import com.utsoft.jan.common.tools.gif.OneSpanTextview;
 import com.utsoft.jan.face.Face;
 import com.utsoft.jan.factory.model.db.Message;
@@ -336,8 +335,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             SpannableString spannableString = new SpannableString(mData.getContent());
             //解析code 表情
             SpannableString decode = Face.decode(spannableString, txtContent, Ui.dipToPx(getResources(),20));
-            TextDrawableCallback.setText(txtContent,decode,TextView.BufferType.SPANNABLE);
-            //txtContent.setText(decode);
+            //TextDrawableCallback.setText(txtContent,decode,TextView.BufferType.SPANNABLE);
+            txtContent.setText(decode,TextView.BufferType.SPANNABLE);
         }
     }
 

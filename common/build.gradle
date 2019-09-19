@@ -59,5 +59,8 @@ dependencies {
     api project(':lang')
     api project(':emoji_res')
 
-    implementation 'org.aspectj:aspectjrt:1.8.9'
+//    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+
+//    implementation 'org.aspectj:aspectjrt:1.8.9'
 }

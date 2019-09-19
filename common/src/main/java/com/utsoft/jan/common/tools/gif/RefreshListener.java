@@ -11,6 +11,8 @@ public interface RefreshListener {
     /**
      * @return true RefreshListener valid
      * false invalid
+     * @param mGlidePreDrawable
+     * @param mSource
      */
-    boolean onRefresh();
+    void onRefresh();
 }

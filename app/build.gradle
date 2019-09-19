@@ -65,5 +65,5 @@ dependencies {
     implementation "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
     implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
 
-    implementation 'org.aspectj:aspectjrt:1.8.9'
+//    implementation 'org.aspectj:aspectjrt:1.8.9'
 }

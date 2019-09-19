@@ -25,9 +25,10 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.utsoft.jan.common.R;
 import com.utsoft.jan.common.app.Application;
-import com.utsoft.jan.common.tools.gif.DrawableTarget;
 import com.utsoft.jan.common.tools.gif.GlidePreDrawable;
+import com.utsoft.jan.common.tools.gif.InvalidateDrawable2;
 import com.utsoft.jan.common.tools.gif.IsoheightImageSpan;
+import com.utsoft.jan.common.tools.gif.RefreshSpan;
 import com.utsoft.jan.utils.StreamUtil;
 
 import java.io.File;
@@ -38,12 +39,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+//import com.utsoft.jan.common.tools.gif.GlidePreDrawable;
 
 /**
  * Created by Administrator on 2019/7/26.
@@ -72,24 +76,29 @@ public class Face {
 
     private static void init() {
         if (emojiTabs == null) {
-            EmojiTab tab = initAssets();
-            //            得到ResourceFace资源
-            ArrayList<EmojiTab> tabArrayList = new ArrayList<>();
-            if (tab != null) {
-                tabArrayList.add(tab);
-            }
+            synchronized (Face.class){
+                if (emojiTabs == null) {
+                    EmojiTab tab = initAssets();
+                    //            得到ResourceFace资源
+                    ArrayList<EmojiTab> tabArrayList = new ArrayList<>();
+                    if (tab != null) {
+                        tabArrayList.add(tab);
+                    }
 
-            EmojiTab face = initResourceFace();
-            if (face != null) {
-                tabArrayList.add(face);
-            }
+                    EmojiTab face = initResourceFace();
+                    if (face != null) {
+                        tabArrayList.add(face);
+                    }
 
-            for (EmojiTab emojiTab : tabArrayList) {
-                emojiTab.copyToMap(arrayMap);
-            }
+                    for (EmojiTab emojiTab : tabArrayList) {
+                        emojiTab.copyToMap(arrayMap);
+                    }
 
-            emojiTabs = Collections.unmodifiableList(tabArrayList);
+                    emojiTabs = Collections.unmodifiableList(tabArrayList);
+                }
         }
+        }
+
     }
 
     private static EmojiTab initResourceFace() {
@@ -215,6 +224,12 @@ public class Face {
                 });
     }
 
+    public static HashMap<Object, GlidePreDrawable> getDrawableCacheMap() {
+        return drawableCacheMap;
+    }
+
+    private static HashMap<Object, GlidePreDrawable> drawableCacheMap = new HashMap<>();
+
     public static SpannableString decode(final SpannableString mData, final TextView txtContent, final float size) {
 
         if (TextUtils.isEmpty(mData)) {
@@ -243,7 +258,25 @@ public class Face {
             int start = matcher.start();
             int end = matcher.end();
 
-            EmojiSpan emojiSpan = new EmojiSpan(txtContent.getContext(), txtContent, emoji.getSource(), (int) size);
+            GlidePreDrawable glidePreDrawable1 = null;
+            if (drawableCacheMap.containsKey(emoji.getSource())){
+                glidePreDrawable1 = drawableCacheMap.get(emoji.getSource());
+            }else {
+                try {
+                    glidePreDrawable1 = new GlidePreDrawable(emoji.getSource().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //Glide.with(txtContent.getContext())
+                //        .load(emoji.getSource())
+                //        .asGif()
+                //        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //        .dontAnimate()
+                //        .into(new DrawableTarget(glidePreDrawable1,(int) size,emoji.getSource()));
+                drawableCacheMap.put(emoji.getSource(),glidePreDrawable1);
+            }
+
+            EmojiSpan emojiSpan = new EmojiSpan(glidePreDrawable1);
 
             mData.setSpan(emojiSpan,start,end,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -259,7 +292,7 @@ public class Face {
         return emoji;
     }
 
-    public static class EmojiSpan extends IsoheightImageSpan {
+    public static class EmojiSpan extends IsoheightImageSpan implements RefreshSpan {
 
         public EmojiSpan(Drawable d) {
             super(d);
@@ -337,17 +370,6 @@ public class Face {
             //            }
             //        });
 
-
-            GlidePreDrawable glidePreDrawable1 = new GlidePreDrawable();
-            //new DrawableTarget(glidePreDrawable)
-
-            Glide.with(context)
-                    .load(resource)
-                    .asGif()
-                    .dontAnimate()
-                    .into(new DrawableTarget(glidePreDrawable1,Size));
-            mDrawable = glidePreDrawable1;
-
         }
 
         //@Override
@@ -364,15 +386,25 @@ public class Face {
         //    return rect.right;
         //}
 
-        @Override
-        public Drawable getDrawable() {
-            return mDrawable;
-        }
+        //@Override
+        //public Drawable getDrawable() {
+        //    return mDrawable;
+        //}
 
         @Override
         public void draw( Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom,  Paint paint) {
-            if (mDrawable!=null)
+            if (getDrawable()!=null)
             super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+        }
+
+        @Override
+        public InvalidateDrawable2 getInvalidateDrawable() {
+            Drawable d = getResizedDrawable();
+            if (d instanceof InvalidateDrawable2) {
+                return (InvalidateDrawable2) d;
+            } else {
+                return null;
+            }
         }
     }
 
